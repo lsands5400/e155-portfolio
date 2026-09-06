@@ -1,0 +1,19 @@
+---
+title: "E155 Labs"
+listing:
+  contents: posts
+  sort: "date desc"
+  type: default
+  categories: false
+---
+
+##Lab 1: FPGA and MCU Setup
+##Lab 2 - Multiplexed 7-Segment Display
+##Lab 3 - Keypad Scanner
+##Lab 4 - Digital Audio
+##Lab 5 - Interrupts
+##Lab 6 - The Internet of Things and Serial Peripheral Interface
+##Lab 7 - The Advanced Encryption Standard (AES)
+
+
+
