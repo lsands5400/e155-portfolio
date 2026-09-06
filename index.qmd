@@ -1,0 +1,20 @@
+---
+title: "E155 Portfolio"
+image: images/headshot.JPG
+about: 
+    template: jolla
+    links: 
+        - icon: linkedin
+          text: LinkedIn
+          href: https://www.linkedin.com/in/lindseyarsands/
+
+        - icon: github
+          text: Github
+          href: https://github.com/lsands5400
+---
+
+Hi! My name is Lindsey Sands. I am a senior engineering major at Harvey Mudd College. 
+My humanities concentration is music because I love to play the French horn and take 
+lessons at Pomona. I hope to graduate and find an industry job in either software, 
+firmware, or robotics. 
+
