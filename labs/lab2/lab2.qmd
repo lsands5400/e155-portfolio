@@ -1,0 +1,28 @@
+---
+title: "Lab 2"
+description: "Multiplexed 7-Segment Display"
+author: "Lindsey Sands"
+date: "9/15/26"
+categories:
+  - reflection
+  - labreport
+draft: true
+---
+
+## Introduction
+
+## Design and Testing Methodology
+
+## Technical Documentation
+
+# Block Diagram 
+
+# Schematic
+
+## Results and Discussion
+
+# Testbench Simulation
+
+## Conclusion
+
+## AI Prototype Summary
