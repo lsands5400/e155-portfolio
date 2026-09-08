@@ -6,14 +6,10 @@
 // https://hmc-e155.github.io/tutorials/tutorial-posts/lattice-radiant-ice40-ultraplus-project-setup/
 module counterLED #(parameter width = 24
 					parameter max = 24'd10_000_000)
-					(input logic reset, en,
+					(input logic int_osc, clk, reset, en,
 					 output logic led);
-	logic int_osc;
+					 
 	logic [width:0] counter; 
-	
-	// Internal high-speed oscillator
-	HSOSC #(.CLKHF_DIV(2'b00))
-		hf_osc (.CLKHFPU(1'b1), .CLKHFEN(1'b1), .CLKHF(int_osc));
 	
 	// Counter
 	always_ff@(posedge int_osc) begin
