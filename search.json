@@ -7,46 +7,11 @@
     "text": "[Link to E155 Website] https://hmc-e155.github.io/"
   },
   {
-    "objectID": "labs.html#lab-2---multiplexed-7-segment-display",
-    "href": "labs.html#lab-2---multiplexed-7-segment-display",
+    "objectID": "labs.html",
+    "href": "labs.html",
     "title": "E155 Labs",
-    "section": "Lab 2 - Multiplexed 7-Segment Display",
-    "text": "Lab 2 - Multiplexed 7-Segment Display"
-  },
-  {
-    "objectID": "labs.html#lab-3---keypad-scanner",
-    "href": "labs.html#lab-3---keypad-scanner",
-    "title": "E155 Labs",
-    "section": "Lab 3 - Keypad Scanner",
-    "text": "Lab 3 - Keypad Scanner"
-  },
-  {
-    "objectID": "labs.html#lab-4---digital-audio",
-    "href": "labs.html#lab-4---digital-audio",
-    "title": "E155 Labs",
-    "section": "Lab 4 - Digital Audio",
-    "text": "Lab 4 - Digital Audio"
-  },
-  {
-    "objectID": "labs.html#lab-5---interrupts",
-    "href": "labs.html#lab-5---interrupts",
-    "title": "E155 Labs",
-    "section": "Lab 5 - Interrupts",
-    "text": "Lab 5 - Interrupts"
-  },
-  {
-    "objectID": "labs.html#lab-6---the-internet-of-things-and-serial-peripheral-interface",
-    "href": "labs.html#lab-6---the-internet-of-things-and-serial-peripheral-interface",
-    "title": "E155 Labs",
-    "section": "Lab 6 - The Internet of Things and Serial Peripheral Interface",
-    "text": "Lab 6 - The Internet of Things and Serial Peripheral Interface"
-  },
-  {
-    "objectID": "labs.html#lab-7---the-advanced-encryption-standard-aes",
-    "href": "labs.html#lab-7---the-advanced-encryption-standard-aes",
-    "title": "E155 Labs",
-    "section": "Lab 7 - The Advanced Encryption Standard (AES)",
-    "text": "Lab 7 - The Advanced Encryption Standard (AES)"
+    "section": "",
+    "text": "Coming Soon… ## Lab 2 - Multiplexed 7-Segment Display ## Lab 3 - Keypad Scanner ## Lab 4 - Digital Audio ## Lab 5 - Interrupts ## Lab 6 - The Internet of Things and Serial Peripheral Interface ## Lab 7 - The Advanced Encryption Standard (AES)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLab 1\n\n\nFPGA and MCU Setup\n\n\n\n\n\nSep 9, 2026\n\n\nLindsey Sands\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "labs/lab1/lab1.html",
@@ -74,14 +39,14 @@
     "href": "labs/lab1/lab1.html#technical-documentation",
     "title": "Lab 1",
     "section": "Technical Documentation",
-    "text": "Technical Documentation\nThe source code for the project can be found in the associated Github repository."
+    "text": "Technical Documentation\nThe source code for the project can be found in the associated Github repository.\nCode: ::: {.callout-caution collapse=“true” title=“Click for Questa Simulation”} // Lindsey Sands // lsands@g.hmc.edu // 09-06-2026 // This is the top module for E155 Lab 1. module lab1_ls(input logic reset, en, input logic[3:0] s,\n            output logic[2:0] led, \n            output logic[6:0] seg);\n            \nlogic int_osc;\n            \n// Internal high-speed oscillator\nHSOSC #(.CLKHF_DIV(2'b00))\n    clk (.CLKHFPU(1'b1), .CLKHFEN(1'b1), .CLKHF(int_osc));\n\n// Seven Segment Display module instantiation\nsevenSegDP dp(s, seg);\n\n// led[0] = s[1] XOR s[0]\nassign led[0] = s[1] ^ s[0];\n\n// led[1] = s[3] AND s[2]\nassign led[1] = s[3] && s[2];\n\n// led[2] blinks at 2.4Hz\ncounterLED counter(int_osc, reset, en, led[2]);\nendmodule\n// Lindsey Sands // lsands@g.hmc.edu // 09-06-2026 // This is the Seven Segment Display module. It takes a binary input value and // outputs the right LED configuration to visually represent the hex digit (0x0-0xF) module sevenSegDP(input logic[3:0] s, output logic[6:0] seg);\nalways_comb\n    case(s)\n        4'b0000: seg = 7'b1000000; // 0\n        4'b0001: seg = 7'b1111001; // 1\n        4'b0010: seg = 7'b0100100; // 2\n        4'b0011: seg = 7'b0110000; // 3\n        4'b0100: seg = 7'b0011001; // 4\n        4'b0101: seg = 7'b0010010; // 5\n        4'b0110: seg = 7'b0000010; // 6\n        4'b0111: seg = 7'b0000111; // 7\n        4'b1000: seg = 7'b0000000; // 8\n        4'b1001: seg = 7'b0011000; // 9\n        4'b1010: seg = 7'b0001000; // A\n        4'b1011: seg = 7'b0000011; // b\n        4'b1100: seg = 7'b1000110; // C\n        4'b1101: seg = 7'b0100001; // d\n        4'b1110: seg = 7'b0000110; // E\n        4'b1111: seg = 7'b0001110; // F\n        default: seg = 7'b1111111;\n    endcase\n    \nendmodule\n// Lindsey Sands // lsands@g.hmc.edu // 09-06-2026 // This is the counter module for E155 Lab 1. It blinks an LED at 2.4Hz. // The code is based on the demo at // https://hmc-e155.github.io/tutorials/tutorial-posts/lattice-radiant-ice40-ultraplus-project-setup/ module counterLED #(parameter width = 25, parameter max = 24’d10_000_000) (input logic int_osc, reset, en, output logic led);\nlogic [width-1:0] counter; \n// Counter\nalways_ff@(posedge int_osc, negedge reset) begin\n    // Reset count if reset button pushed or count gets to maximum value\n    // Reset is active LOW\n    if((reset == 0)||(counter == max-1)) counter &lt;= 0;\n        \n    // Increment counter the same if enable is on       \n    else if(en)                       counter &lt;= counter + 1;\n    else                              counter &lt;= counter;\nend\n\n// Assign LED output\nassign led = counter[width-1];\nendmodule\nTest benches: // Lindsey Sands // lsands@g.hmc.edu // 9/7/2026 // This is the testbench for the Lab 1 top module. `timescale 1 ns/1 ns\nmodule lab1_tb(); logic clk; // system clock logic reset; // active high reset logic [3:0] s; // 4-bit input switches logic [2:0] led; // 3 output leds logic [6:0] seg; // seven segment display logic int_osc; logic counter; logic en;\nassign en = 1;\nlab1_ls dut (\n    .reset(reset),\n    .en(en),\n    .s(s),\n    .led(led),\n    .seg(seg)\n);\n\nHSOSC #(.CLKHF_DIV(2'b00))\n    dut2 (.CLKHFPU(1'b1), .CLKHFEN(1'b1), .CLKHF(int_osc));\n// generate clock always begin clk = 0; #5; clk = 1; #5; end\n// apply stimuli and check outputs initial begin reset = 1; #22 reset = 0;\n// No-LED test\ns = 4'b0000;                // setup inputs\n#10;                        // wait required time\nassert (led == 2'b00)       // check outputs\nelse \n    $error(\"No-LED test failed.\"); \n    \n// LED[0] test\ns = 4'b0001;\n#10;\nassert (led == 2'b01)\nelse \n    $error(\"LED[0] test failed.\", $time); \n\n// LED[1] test\ns = 4'b1100;\n#10;\nassert (led == 2'b10)\nelse \n    $error(\"LED[1] test failed.\", $time); \n    \n// HSOSC test\n#22;\nassert (int_osc == 1)\nelse \n    $error(\"HSOSC failed.\", $time); \n\n// Seven Segment Display integration test\ns = 4'b0000;\n#10;\nassert (seg == 7'b1000000)\nelse \n    $error(\"Seven segment display integration failed.\", $time); \n\n// Counter integration test\nreset = 0;\n#50 reset = 1; \n#80\nassert (led[2] == 1)\nelse \n    $error(\"Counter integration failed.\", $time); \n\n#100 $stop;\nend endmodule\n// Lindsey Sands // lsands@g.hmc.edu // 9/7/2026 // This is the testbench for the counter module. `timescale 1 ns/1 ns\nmodule counter_tb(); logic int_osc; logic reset; // active high reset logic en; // enable logic led; // output LED logic [24:0] counter; // counter logic [24:0] max; // max count\nassign max = 24'd10_000_000;\n\ncounterLED dut(\n    .int_osc(int_osc),\n    .reset(reset),\n    .en(en),\n    .led(led)\n);\n\n// generate clock\nalways begin\n    int_osc = 0; #5;\n    int_osc = 1; #5;\nend\n\n// Counter\nalways_ff@(posedge int_osc, negedge reset) begin\n    // Reset count if reset button pushed or count gets to maximum value\n    // Reset is active LOW\n    if((reset == 0)||(counter == max-1)) counter &lt;= 0;\n        \n    // Increment counter the same if enable is on       \n    else if(en)                       counter &lt;= counter + 1;\n    else                              counter &lt;= counter;\nend\n\n// apply stimuli and check outputs\ninitial begin\n    // verify reset (Reset is active low)\n    reset = 0;\n    #22 reset = 1;            \n    en = 1;\n    #100;                        // wait required time\n    assert (counter &gt; 0)       // check outputs\n    else \n        $error(\"Reset test 1 failed.\");\n    reset = 0;  \n    #10;\n    assert (counter == 0)       // check outputs\n    else \n        $error(\"Reset test 2 failed.\"); \n    // verify enable\n    reset = 0;\n    en = 0;\n    #22 reset = 1;              \n    #50;\n    assert (counter == 0)\n    else \n        $error(\"Enable test 1 failed.\");\n    en = 1;\n    #50;\n    assert (counter != 0)\n    else \n        $error(\"Enable test 2 failed.\"); \n    // verify max count\n    reset = 0;\n    #22 reset = 1;          \n    en = 1;\n    #100_000_000;\n    assert (counter == 0)\n    else \n        $error(\"Max count test failed.\"); \n\n    #100 $stop;\nend\nendmodule\n// Lindsey Sands // lsands@g.hmc.edu // 9/7/2026 // This is the testbench for the seven segment display module. // It covers every single case of input bits. `timescale 1 ns/1 ns\nmodule ssdp_tb(); logic [3:0] s; // 4 input bits logic [6:0] seg; // Seven segment display LEDs\n// instantiate device under test\nsevenSegDP dut(.s(s),\n                .seg(seg));\n\n// apply inputs one at a time\n// checking results\ninitial begin\n    s = 4'b0000; #10;\n    assert (seg == 7'b1000000) else $error(\"0000 (0) failed.\");\n    s = 4'b0001; #10;\n    assert (seg==7'b1111001) else $error(\"0001(1) failed.\");\n    s = 4'b0010; #10;\n    assert (seg== 7'b0100100) else $error(\"0010(2) failed.\");\n    s = 4'b0011; #10;\n    assert (seg== 7'b0110000) else $error(\"0011(3) failed.\");\n    s = 4'b0100; #10;\n    assert (seg== 7'b0011001) else $error(\"0100(4) failed.\");\n    s = 4'b0101; #10;\n    assert (seg== 7'b0010010) else $error(\"0101(5) failed.\");\n    s = 4'b0110; #10;\n    assert (seg== 7'b0000010) else $error(\"0110(6) failed.\");\n    s = 4'b0111; #10;\n    assert (seg== 7'b0000111) else $error(\"0111(7) failed.\");\n    s = 4'b1000; #10;\n    assert (seg== 7'b0000000) else $error(\"1000(8) failed.\");\n    s = 4'b1001; #10;\n    assert (seg== 7'b0011000) else $error(\"1001(9) failed.\");\n    s = 4'b1010; #10;\n    assert (seg== 7'b0001000) else $error(\"1010(A) failed.\");\n    s = 4'b1011; #10;\n    assert (seg== 7'b0000011) else $error(\"1011(b) failed.\");\n    s = 4'b1100; #10;\n    assert (seg== 7'b1000110) else $error(\"1100(C) failed.\");\n    s = 4'b1101; #10;\n    assert (seg== 7'b0100001) else $error(\"1101(d) failed.\");\n    s = 4'b1110; #10;\n    assert (seg== 7'b0000110) else $error(\"1110(E) failed.\");\n    s = 4'b1111; #10;\n    assert (seg== 7'b0001110) else $error(\"1111(F) failed.\");\n    \n    #100 $stop;\nend\nendmodule ::: # Block Diagram"
   },
   {
     "objectID": "labs/lab1/lab1.html#results-and-discussion",
     "href": "labs/lab1/lab1.html#results-and-discussion",
     "title": "Lab 1",
     "section": "Results and Discussion",
-    "text": "Results and Discussion\nTODO: complete this # Testbench Simulation \n\n\n\nFigure 6: Counter Reset Questa Simulation\n\n\n\n\n\nFigure 7: Counter Enable Questa Simulation\n\n\n\n\n\nFigure 8: Counter Max Count Questa Simulation\n\n\n\n\n\nFigure 9: Lab 1 Top Module Questa Simulation"
+    "text": "Results and Discussion"
   },
   {
     "objectID": "labs/lab1/lab1.html#conclusion",
@@ -91,11 +56,11 @@
     "text": "Conclusion\nTODO: Did everything work? I spent about 25-30 hours on this lab."
   },
   {
-    "objectID": "labs/lab1/lab1.html#ai-prototype-summary",
-    "href": "labs/lab1/lab1.html#ai-prototype-summary",
+    "objectID": "labs/lab1/lab1.html#ai-prototype-summaryi-gave-chatgpt-the-promtp-and-it-gave-me-this-code",
+    "href": "labs/lab1/lab1.html#ai-prototype-summaryi-gave-chatgpt-the-promtp-and-it-gave-me-this-code",
     "title": "Lab 1",
-    "section": "AI Prototype Summary",
-    "text": "AI Prototype Summary\nTODO: Finish this"
+    "section": "AI Prototype SummaryI gave ChatGPT the promtp and it gave me this code:",
+    "text": "AI Prototype SummaryI gave ChatGPT the promtp and it gave me this code:\nmodule led_blink ( output logic led );\n// UP5K internal high-frequency oscillator\nlogic clk;\n\nSB_HFOSC #(\n    .CLKHF_DIV(\"0b00\")    // 48 MHz\n) hfosc (\n    .CLKHFPU(1'b1),       // Power up oscillator\n    .CLKHFEN(1'b1),       // Enable oscillator\n    .CLKHF(clk)\n);\n\n// 48 MHz / (2 * 12,000,000) = 2 Hz\nlocalparam int unsigned HALF_PERIOD = 12_000_000;\n\nlogic [23:0] counter;\n\nalways_ff @(posedge clk) begin\n    if (counter == HALF_PERIOD - 1) begin\n        counter &lt;= '0;\n        led     &lt;= ~led;\n    end\n    else begin\n        counter &lt;= counter + 1'b1;\n    end\nend\nendmodule\nHowever, this failed to simulate, so I asked it to fix it.\nIt gave me a new script but it asked for more detailed error messages. I could not find different error messages, so it could have been more helpful by telling me where to find them."
   },
   {
     "objectID": "blog.html",

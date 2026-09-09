@@ -133,12 +133,14 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#design-and-testing-methodology" id="toc-design-and-testing-methodology" class="nav-link" data-scroll-target="#design-and-testing-methodology">Design and Testing Methodology</a></li>
   <li><a href="#technical-documentation" id="toc-technical-documentation" class="nav-link" data-scroll-target="#technical-documentation">Technical Documentation</a></li>
-  <li><a href="#block-diagram" id="toc-block-diagram" class="nav-link" data-scroll-target="#block-diagram">Block Diagram</a></li>
   <li><a href="#schematic" id="toc-schematic" class="nav-link" data-scroll-target="#schematic">Schematic</a>
   <ul class="collapse">
   <li><a href="#results-and-discussion" id="toc-results-and-discussion" class="nav-link" data-scroll-target="#results-and-discussion">Results and Discussion</a></li>
+  </ul></li>
+  <li><a href="#testbench-simulation" id="toc-testbench-simulation" class="nav-link" data-scroll-target="#testbench-simulation">Testbench Simulation</a>
+  <ul class="collapse">
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
-  <li><a href="#ai-prototype-summary" id="toc-ai-prototype-summary" class="nav-link" data-scroll-target="#ai-prototype-summary">AI Prototype Summary</a></li>
+  <li><a href="#ai-prototype-summaryi-gave-chatgpt-the-promtp-and-it-gave-me-this-code" id="toc-ai-prototype-summaryi-gave-chatgpt-the-promtp-and-it-gave-me-this-code" class="nav-link" data-scroll-target="#ai-prototype-summaryi-gave-chatgpt-the-promtp-and-it-gave-me-this-code">AI Prototype SummaryI gave ChatGPT the promtp and it gave me this code:</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -214,54 +216,394 @@ ul.task-list li input[type="checkbox"] {
 <section id="technical-documentation" class="level2">
 <h2 class="anchored" data-anchor-id="technical-documentation">Technical Documentation</h2>
 <p>The source code for the project can be found in the associated <a href="https://github.com/lsands5400/e155-lab1.git">Github repository</a>.</p>
-</section>
-<section id="block-diagram" class="level1">
-<h1>Block Diagram</h1>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/block_diagram.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
-<figcaption>Figure 3: Block diagram</figcaption>
-</figure>
-</div>
+<p>Code: ::: {.callout-caution collapse=“true” title=“Click for Questa Simulation”} // Lindsey Sands // lsands@g.hmc.edu // 09-06-2026 // This is the top module for E155 Lab 1. module lab1_ls(input logic reset, en, input logic[3:0] s,</p>
+<pre><code>            output logic[2:0] led, 
+            output logic[6:0] seg);
+            
+logic int_osc;
+            
+// Internal high-speed oscillator
+HSOSC #(.CLKHF_DIV(2'b00))
+    clk (.CLKHFPU(1'b1), .CLKHFEN(1'b1), .CLKHF(int_osc));
+
+// Seven Segment Display module instantiation
+sevenSegDP dp(s, seg);
+
+// led[0] = s[1] XOR s[0]
+assign led[0] = s[1] ^ s[0];
+
+// led[1] = s[3] AND s[2]
+assign led[1] = s[3] &amp;&amp; s[2];
+
+// led[2] blinks at 2.4Hz
+counterLED counter(int_osc, reset, en, led[2]);</code></pre>
+<p>endmodule</p>
+<p>// Lindsey Sands // lsands@g.hmc.edu // 09-06-2026 // This is the Seven Segment Display module. It takes a binary input value and // outputs the right LED configuration to visually represent the hex digit (0x0-0xF) module sevenSegDP(input logic[3:0] s, output logic[6:0] seg);</p>
+<pre><code>always_comb
+    case(s)
+        4'b0000: seg = 7'b1000000; // 0
+        4'b0001: seg = 7'b1111001; // 1
+        4'b0010: seg = 7'b0100100; // 2
+        4'b0011: seg = 7'b0110000; // 3
+        4'b0100: seg = 7'b0011001; // 4
+        4'b0101: seg = 7'b0010010; // 5
+        4'b0110: seg = 7'b0000010; // 6
+        4'b0111: seg = 7'b0000111; // 7
+        4'b1000: seg = 7'b0000000; // 8
+        4'b1001: seg = 7'b0011000; // 9
+        4'b1010: seg = 7'b0001000; // A
+        4'b1011: seg = 7'b0000011; // b
+        4'b1100: seg = 7'b1000110; // C
+        4'b1101: seg = 7'b0100001; // d
+        4'b1110: seg = 7'b0000110; // E
+        4'b1111: seg = 7'b0001110; // F
+        default: seg = 7'b1111111;
+    endcase
+    </code></pre>
+<p>endmodule</p>
+<p>// Lindsey Sands // lsands@g.hmc.edu // 09-06-2026 // This is the counter module for E155 Lab 1. It blinks an LED at 2.4Hz. // The code is based on the demo at // https://hmc-e155.github.io/tutorials/tutorial-posts/lattice-radiant-ice40-ultraplus-project-setup/ module counterLED #(parameter width = 25, parameter max = 24’d10_000_000) (input logic int_osc, reset, en, output logic led);</p>
+<pre><code>logic [width-1:0] counter; 
+// Counter
+always_ff@(posedge int_osc, negedge reset) begin
+    // Reset count if reset button pushed or count gets to maximum value
+    // Reset is active LOW
+    if((reset == 0)||(counter == max-1)) counter &lt;= 0;
+        
+    // Increment counter the same if enable is on       
+    else if(en)                       counter &lt;= counter + 1;
+    else                              counter &lt;= counter;
+end
+
+// Assign LED output
+assign led = counter[width-1];</code></pre>
+<p>endmodule</p>
+<p>Test benches: // Lindsey Sands // lsands@g.hmc.edu // 9/7/2026 // This is the testbench for the Lab 1 top module. `timescale 1 ns/1 ns</p>
+<p>module lab1_tb(); logic clk; // system clock logic reset; // active high reset logic [3:0] s; // 4-bit input switches logic [2:0] led; // 3 output leds logic [6:0] seg; // seven segment display logic int_osc; logic counter; logic en;</p>
+<p>assign en = 1;</p>
+<pre><code>lab1_ls dut (
+    .reset(reset),
+    .en(en),
+    .s(s),
+    .led(led),
+    .seg(seg)
+);
+
+HSOSC #(.CLKHF_DIV(2'b00))
+    dut2 (.CLKHFPU(1'b1), .CLKHFEN(1'b1), .CLKHF(int_osc));</code></pre>
+<p>// generate clock always begin clk = 0; #5; clk = 1; #5; end</p>
+<p>// apply stimuli and check outputs initial begin reset = 1; #22 reset = 0;</p>
+<pre><code>// No-LED test
+s = 4'b0000;                // setup inputs
+#10;                        // wait required time
+assert (led == 2'b00)       // check outputs
+else 
+    $error("No-LED test failed."); 
+    
+// LED[0] test
+s = 4'b0001;
+#10;
+assert (led == 2'b01)
+else 
+    $error("LED[0] test failed.", $time); 
+
+// LED[1] test
+s = 4'b1100;
+#10;
+assert (led == 2'b10)
+else 
+    $error("LED[1] test failed.", $time); 
+    
+// HSOSC test
+#22;
+assert (int_osc == 1)
+else 
+    $error("HSOSC failed.", $time); 
+
+// Seven Segment Display integration test
+s = 4'b0000;
+#10;
+assert (seg == 7'b1000000)
+else 
+    $error("Seven segment display integration failed.", $time); 
+
+// Counter integration test
+reset = 0;
+#50 reset = 1; 
+#80
+assert (led[2] == 1)
+else 
+    $error("Counter integration failed.", $time); 
+
+#100 $stop;</code></pre>
+<p>end endmodule</p>
+<p>// Lindsey Sands // lsands@g.hmc.edu // 9/7/2026 // This is the testbench for the counter module. `timescale 1 ns/1 ns</p>
+<p>module counter_tb(); logic int_osc; logic reset; // active high reset logic en; // enable logic led; // output LED logic [24:0] counter; // counter logic [24:0] max; // max count</p>
+<pre><code>assign max = 24'd10_000_000;
+
+counterLED dut(
+    .int_osc(int_osc),
+    .reset(reset),
+    .en(en),
+    .led(led)
+);
+
+// generate clock
+always begin
+    int_osc = 0; #5;
+    int_osc = 1; #5;
+end
+
+// Counter
+always_ff@(posedge int_osc, negedge reset) begin
+    // Reset count if reset button pushed or count gets to maximum value
+    // Reset is active LOW
+    if((reset == 0)||(counter == max-1)) counter &lt;= 0;
+        
+    // Increment counter the same if enable is on       
+    else if(en)                       counter &lt;= counter + 1;
+    else                              counter &lt;= counter;
+end
+
+// apply stimuli and check outputs
+initial begin
+    // verify reset (Reset is active low)
+    reset = 0;
+    #22 reset = 1;            
+    en = 1;
+    #100;                        // wait required time
+    assert (counter &gt; 0)       // check outputs
+    else 
+        $error("Reset test 1 failed.");
+    reset = 0;  
+    #10;
+    assert (counter == 0)       // check outputs
+    else 
+        $error("Reset test 2 failed."); 
+    // verify enable
+    reset = 0;
+    en = 0;
+    #22 reset = 1;              
+    #50;
+    assert (counter == 0)
+    else 
+        $error("Enable test 1 failed.");
+    en = 1;
+    #50;
+    assert (counter != 0)
+    else 
+        $error("Enable test 2 failed."); 
+    // verify max count
+    reset = 0;
+    #22 reset = 1;          
+    en = 1;
+    #100_000_000;
+    assert (counter == 0)
+    else 
+        $error("Max count test failed."); 
+
+    #100 $stop;
+end</code></pre>
+<p>endmodule</p>
+<p>// Lindsey Sands // lsands@g.hmc.edu // 9/7/2026 // This is the testbench for the seven segment display module. // It covers every single case of input bits. `timescale 1 ns/1 ns</p>
+<p>module ssdp_tb(); logic [3:0] s; // 4 input bits logic [6:0] seg; // Seven segment display LEDs</p>
+<pre><code>// instantiate device under test
+sevenSegDP dut(.s(s),
+                .seg(seg));
+
+// apply inputs one at a time
+// checking results
+initial begin
+    s = 4'b0000; #10;
+    assert (seg == 7'b1000000) else $error("0000 (0) failed.");
+    s = 4'b0001; #10;
+    assert (seg==7'b1111001) else $error("0001(1) failed.");
+    s = 4'b0010; #10;
+    assert (seg== 7'b0100100) else $error("0010(2) failed.");
+    s = 4'b0011; #10;
+    assert (seg== 7'b0110000) else $error("0011(3) failed.");
+    s = 4'b0100; #10;
+    assert (seg== 7'b0011001) else $error("0100(4) failed.");
+    s = 4'b0101; #10;
+    assert (seg== 7'b0010010) else $error("0101(5) failed.");
+    s = 4'b0110; #10;
+    assert (seg== 7'b0000010) else $error("0110(6) failed.");
+    s = 4'b0111; #10;
+    assert (seg== 7'b0000111) else $error("0111(7) failed.");
+    s = 4'b1000; #10;
+    assert (seg== 7'b0000000) else $error("1000(8) failed.");
+    s = 4'b1001; #10;
+    assert (seg== 7'b0011000) else $error("1001(9) failed.");
+    s = 4'b1010; #10;
+    assert (seg== 7'b0001000) else $error("1010(A) failed.");
+    s = 4'b1011; #10;
+    assert (seg== 7'b0000011) else $error("1011(b) failed.");
+    s = 4'b1100; #10;
+    assert (seg== 7'b1000110) else $error("1100(C) failed.");
+    s = 4'b1101; #10;
+    assert (seg== 7'b0100001) else $error("1101(d) failed.");
+    s = 4'b1110; #10;
+    assert (seg== 7'b0000110) else $error("1110(E) failed.");
+    s = 4'b1111; #10;
+    assert (seg== 7'b0001110) else $error("1111(F) failed.");
+    
+    #100 $stop;
+end</code></pre>
+<p>endmodule ::: # Block Diagram <img src="images/block_diagram.jpeg" class="img-fluid" style="width:80.0%" alt="Figure 3: Block diagram"></p>
 </section>
 <section id="schematic" class="level1">
 <h1>Schematic</h1>
-<p>TODO: fix this and add the FPGA and internal pull up resistors and buttons and switches <img src="images/schematic.jpeg" class="img-fluid" style="width:80.0%" alt="Figure 4: Schematic"></p>
-<section id="results-and-discussion" class="level2">
-<h2 class="anchored" data-anchor-id="results-and-discussion">Results and Discussion</h2>
-<p>TODO: complete this # Testbench Simulation <img src="images/ssdp_tb_ss_final.png" class="img-fluid" style="width:100.0%" alt="Figure 5: Seven Segment Display Questa Simulation"></p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/counter_tb_reset.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption>Figure 6: Counter Reset Questa Simulation</figcaption>
+<p><img src="images/IMG_1291.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>Figure 4: Schematic</figcaption>
 </figure>
 </div>
+<section id="results-and-discussion" class="level2">
+<h2 class="anchored" data-anchor-id="results-and-discussion">Results and Discussion</h2>
+</section>
+</section>
+<section id="testbench-simulation" class="level1">
+<h1>Testbench Simulation</h1>
+<p>All of the testbenches ran successfully with no errors.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="Click for Questa Simulation">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Click for Questa Simulation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/ssdp_tb_ss_final.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Figure 5: Seven Segment Display Questa Simulation</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>All 16 LED configurations work.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="Click for Questa Simulation">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Click for Questa Simulation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/counter_tb_reset.png" class="img-fluid" style="width:100.0%" alt="Figure 6: Counter Reset Questa Simulation"> The active low reset functionality sets the counter back to zero.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled" title="Click for Questa Simulation">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Click for Questa Simulation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/counter_tb_enable.png" class="img-fluid figure-img" style="width:100.0%"></p>
 <figcaption>Figure 7: Counter Enable Questa Simulation</figcaption>
 </figure>
 </div>
+</div>
+</div>
+</div>
+<p>When high, enable allows the counter to increment. When low, the counter stays at the same value unless reset is pressed.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="Click for Questa Simulation">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Click for Questa Simulation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/counter_tb_max.png" class="img-fluid figure-img" style="width:100.0%"></p>
 <figcaption>Figure 8: Counter Max Count Questa Simulation</figcaption>
 </figure>
 </div>
+</div>
+</div>
+</div>
+<p>When the counter reaches the maximum count, instead of continuing to count up, it resets to 0.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="Click for Questa Simulation">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Click for Questa Simulation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/lab1_tb_all.png" class="img-fluid figure-img" style="width:100.0%"></p>
 <figcaption>Figure 9: Lab 1 Top Module Questa Simulation</figcaption>
 </figure>
 </div>
-</section>
+</div>
+</div>
+</div>
+<p>All of the integrated modules and LED logic works.</p>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
 <p>TODO: Did everything work? I spent about 25-30 hours on this lab.</p>
 </section>
-<section id="ai-prototype-summary" class="level2">
-<h2 class="anchored" data-anchor-id="ai-prototype-summary">AI Prototype Summary</h2>
-<p>TODO: Finish this</p>
+<section id="ai-prototype-summaryi-gave-chatgpt-the-promtp-and-it-gave-me-this-code" class="level2">
+<h2 class="anchored" data-anchor-id="ai-prototype-summaryi-gave-chatgpt-the-promtp-and-it-gave-me-this-code">AI Prototype SummaryI gave ChatGPT the promtp and it gave me this code:</h2>
+<p>module led_blink ( output logic led );</p>
+<pre><code>// UP5K internal high-frequency oscillator
+logic clk;
+
+SB_HFOSC #(
+    .CLKHF_DIV("0b00")    // 48 MHz
+) hfosc (
+    .CLKHFPU(1'b1),       // Power up oscillator
+    .CLKHFEN(1'b1),       // Enable oscillator
+    .CLKHF(clk)
+);
+
+// 48 MHz / (2 * 12,000,000) = 2 Hz
+localparam int unsigned HALF_PERIOD = 12_000_000;
+
+logic [23:0] counter;
+
+always_ff @(posedge clk) begin
+    if (counter == HALF_PERIOD - 1) begin
+        counter &lt;= '0;
+        led     &lt;= ~led;
+    end
+    else begin
+        counter &lt;= counter + 1'b1;
+    end
+end</code></pre>
+<p>endmodule</p>
+<p>However, this failed to simulate, so I asked it to fix it.</p>
+<p>It gave me a new script but it asked for more detailed error messages. I could not find different error messages, so it could have been more helpful by telling me where to find them.</p>
 
 
 </section>
