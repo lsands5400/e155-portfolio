@@ -1,5 +1,103 @@
 [
   {
+    "objectID": "resources.html",
+    "href": "resources.html",
+    "title": "E155 Resources",
+    "section": "",
+    "text": "[Link to E155 Website] https://hmc-e155.github.io/"
+  },
+  {
+    "objectID": "labs.html#lab-2---multiplexed-7-segment-display",
+    "href": "labs.html#lab-2---multiplexed-7-segment-display",
+    "title": "E155 Labs",
+    "section": "Lab 2 - Multiplexed 7-Segment Display",
+    "text": "Lab 2 - Multiplexed 7-Segment Display"
+  },
+  {
+    "objectID": "labs.html#lab-3---keypad-scanner",
+    "href": "labs.html#lab-3---keypad-scanner",
+    "title": "E155 Labs",
+    "section": "Lab 3 - Keypad Scanner",
+    "text": "Lab 3 - Keypad Scanner"
+  },
+  {
+    "objectID": "labs.html#lab-4---digital-audio",
+    "href": "labs.html#lab-4---digital-audio",
+    "title": "E155 Labs",
+    "section": "Lab 4 - Digital Audio",
+    "text": "Lab 4 - Digital Audio"
+  },
+  {
+    "objectID": "labs.html#lab-5---interrupts",
+    "href": "labs.html#lab-5---interrupts",
+    "title": "E155 Labs",
+    "section": "Lab 5 - Interrupts",
+    "text": "Lab 5 - Interrupts"
+  },
+  {
+    "objectID": "labs.html#lab-6---the-internet-of-things-and-serial-peripheral-interface",
+    "href": "labs.html#lab-6---the-internet-of-things-and-serial-peripheral-interface",
+    "title": "E155 Labs",
+    "section": "Lab 6 - The Internet of Things and Serial Peripheral Interface",
+    "text": "Lab 6 - The Internet of Things and Serial Peripheral Interface"
+  },
+  {
+    "objectID": "labs.html#lab-7---the-advanced-encryption-standard-aes",
+    "href": "labs.html#lab-7---the-advanced-encryption-standard-aes",
+    "title": "E155 Labs",
+    "section": "Lab 7 - The Advanced Encryption Standard (AES)",
+    "text": "Lab 7 - The Advanced Encryption Standard (AES)"
+  },
+  {
+    "objectID": "labs/lab1/lab1.html",
+    "href": "labs/lab1/lab1.html",
+    "title": "Lab 1",
+    "section": "",
+    "text": "In this lab, an FPGA was programmed to control multiple LEDs. One LED blinked at 2.4 Hz. Two other LEDs executed AND and XOR operations based on a 4-bit switch input. Finally, the last 7 LEDs were part of a seven segment display and are configured to display the hex digits from 0x0 to 0xF based on the same switch input."
+  },
+  {
+    "objectID": "labs/lab1/lab1.html#introduction",
+    "href": "labs/lab1/lab1.html#introduction",
+    "title": "Lab 1",
+    "section": "",
+    "text": "In this lab, an FPGA was programmed to control multiple LEDs. One LED blinked at 2.4 Hz. Two other LEDs executed AND and XOR operations based on a 4-bit switch input. Finally, the last 7 LEDs were part of a seven segment display and are configured to display the hex digits from 0x0 to 0xF based on the same switch input."
+  },
+  {
+    "objectID": "labs/lab1/lab1.html#design-and-testing-methodology",
+    "href": "labs/lab1/lab1.html#design-and-testing-methodology",
+    "title": "Lab 1",
+    "section": "Design and Testing Methodology",
+    "text": "Design and Testing Methodology\nFor the blinking LED, a 48 MHz clock signal was generated from the on-board high-speed oscillator (HSOSC) from the iCE40 UltraPlus primitive library.\nThe necessary maximum count for a counter module was calculated in order to turn the 48 MHz input into the 2.4 Hz output, as shown in Figure 1 below.\n\n\n\nFigure 1: Calculation for LED blinking at 2.4 Hz\n\n\nUsing this calculation, a counter module was designed with parameters of width and maximum count set to 24’d10_000_000 and 25, respectively. The counter module also has reset and enable functionality.\nAdditionally, there were calculations performed to figure out the proper pull-down resistor size for the seven segment display LEDs. Using the information from the data, a target current draw of 8mA was chosen.\n\n\n\nFigure 2: Calculation for current draw from seven segment display\n\n\nA standard resistor size of 150 Ω based on the calculation in Figure 2.\nThe top module handles the logic of the last two LEDs, assigning the XOR and AND logic. The top module is also where the HSOSC, counter, and seven segment display modules are all integrated together."
+  },
+  {
+    "objectID": "labs/lab1/lab1.html#technical-documentation",
+    "href": "labs/lab1/lab1.html#technical-documentation",
+    "title": "Lab 1",
+    "section": "Technical Documentation",
+    "text": "Technical Documentation\nThe source code for the project can be found in the associated Github repository."
+  },
+  {
+    "objectID": "labs/lab1/lab1.html#results-and-discussion",
+    "href": "labs/lab1/lab1.html#results-and-discussion",
+    "title": "Lab 1",
+    "section": "Results and Discussion",
+    "text": "Results and Discussion\nTODO: complete this # Testbench Simulation \n\n\n\nFigure 6: Counter Reset Questa Simulation\n\n\n\n\n\nFigure 7: Counter Enable Questa Simulation\n\n\n\n\n\nFigure 8: Counter Max Count Questa Simulation\n\n\n\n\n\nFigure 9: Lab 1 Top Module Questa Simulation"
+  },
+  {
+    "objectID": "labs/lab1/lab1.html#conclusion",
+    "href": "labs/lab1/lab1.html#conclusion",
+    "title": "Lab 1",
+    "section": "Conclusion",
+    "text": "Conclusion\nTODO: Did everything work? I spent about 25-30 hours on this lab."
+  },
+  {
+    "objectID": "labs/lab1/lab1.html#ai-prototype-summary",
+    "href": "labs/lab1/lab1.html#ai-prototype-summary",
+    "title": "Lab 1",
+    "section": "AI Prototype Summary",
+    "text": "AI Prototype Summary\nTODO: Finish this"
+  },
+  {
     "objectID": "blog.html",
     "href": "blog.html",
     "title": "E155 Blog",
