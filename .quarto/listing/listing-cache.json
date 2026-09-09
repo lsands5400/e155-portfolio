@@ -3,17 +3,6 @@
     "blog.qmd": [
       "posts"
     ],
-    "labs\\lab1\\lab1.qmd": [
-      "posts"
-    ],
-    "labs\\labs.qmd": [
-      "posts",
-      "labs"
-    ],
-    "resources.qmd": [
-      "posts",
-      "B3049D40"
-    ],
     "labs.qmd": [
       "labs"
     ]

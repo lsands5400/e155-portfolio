@@ -7,7 +7,7 @@ listing:
   categories: false
 ---
 
-## Lab 1 - FPGA and MCU Setup
+Coming Soon...
 ## Lab 2 - Multiplexed 7-Segment Display
 ## Lab 3 - Keypad Scanner
 ## Lab 4 - Digital Audio

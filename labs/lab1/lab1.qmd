@@ -43,20 +43,32 @@ TODO: fix this and add the FPGA and internal pull up resistors and buttons and s
 ## Results and Discussion
 TODO: complete this
 # Testbench Simulation
+All of the testbenches ran successfully with no errors. 
+
+::: {.callout-caution collapse="true" title="Click for Questa Simulation"}
 ![Figure 5: Seven Segment Display Questa Simulation](images/ssdp_tb_ss_final.png){width=100%}
+:::
+All 16 LED configurations work. 
 
-
+::: {.callout-caution collapse="true" title="Click for Questa Simulation"}
 ![Figure 6: Counter Reset Questa Simulation](images/counter_tb_reset.png){width=100%}
+The active low reset functionality sets the counter back to zero.
+:::
 
-
+::: {.callout-caution collapse="true" title="Click for Questa Simulation"}
 ![Figure 7: Counter Enable Questa Simulation](images/counter_tb_enable.png){width=100%}
+:::
+When high, enable allows the counter to increment. When low, the counter stays at the same value unless reset is pressed.
 
-
+::: {.callout-caution collapse="true" title="Click for Questa Simulation"}
 ![Figure 8: Counter Max Count Questa Simulation](images/counter_tb_max.png){width=100%}
+:::
+When the counter reaches the maximum count, instead of continuing to count up, it resets to 0.
 
-
+::: {.callout-caution collapse="true" title="Click for Questa Simulation"}
 ![Figure 9: Lab 1 Top Module Questa Simulation](images/lab1_tb_all.png){width=100%}
-
+:::
+All of the integrated modules and LED logic works. 
 
 ## Conclusion
 TODO: Did everything work?
