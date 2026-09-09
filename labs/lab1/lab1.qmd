@@ -2,37 +2,65 @@
 title: "Lab 1"
 description: "FPGA and MCU Setup"
 author: "Lindsey Sands"
-date: "9/8/26"
+date: "9/9/26"
 categories:
   - reflection
   - labreport
 draft: false
 ---
 ## Introduction
+In this lab, an FPGA was programmed to control multiple LEDs. One LED blinked at 2.4 Hz. Two other LEDs executed AND and XOR operations based on a 4-bit switch input. Finally, the last 7 LEDs were part of a seven segment display and are configured to display the hex digits from 0x0 to 0xF based on the same switch input. 
 
 ## Design and Testing Methodology
+For the blinking LED, a 48 MHz clock signal was generated from the on-board high-speed oscillator (HSOSC) from the iCE40 UltraPlus primitive library.
+
+The necessary maximum count for a counter module was calculated in order to turn the 48 MHz input into the 2.4 Hz output, as shown in Figure 1 below. 
+
+![Figure 1: Calculation for LED blinking at 2.4 Hz](images/led_calc.jpeg){width=80%}
+
+Using this calculation, a counter module was designed with parameters of width and maximum count set to 24'd10_000_000 and 25, respectively. The counter module also has reset and enable functionality. 
+
+Additionally, there were calculations performed to figure out the proper pull-down resistor size for the seven segment display LEDs. Using the information from the data, a target current draw of 8mA was chosen. 
+
+![Figure 2: Calculation for current draw from seven segment display](images/ssdp_calc.jpeg){width=80%}
+
+A standard resistor size of 150 Ω based on the calculation in Figure 2.
+
+The top module handles the logic of the last two LEDs, assigning the XOR and AND logic. The top module is also where the HSOSC, counter, and seven segment display modules are all integrated together. 
+
 
 ## Technical Documentation
+The source code for the project can be found in the associated [Github repository](https://github.com/lsands5400/e155-lab1.git).
+
 
 # Block Diagram 
+![Figure 3: Block diagram](images/block_diagram.jpeg){width=80%}
 
 # Schematic
+TODO: fix this and add the FPGA and internal pull up resistors and buttons and switches
+![Figure 4: Schematic](images/schematic.jpeg){width=80%}
 
 ## Results and Discussion
-
+TODO: complete this
 # Testbench Simulation
+![Figure 5: Seven Segment Display Questa Simulation](images/ssdp_tb_ss_final.png){width=100%}
+
+
+![Figure 6: Counter Reset Questa Simulation](images/counter_tb_reset.png){width=100%}
+
+
+![Figure 7: Counter Enable Questa Simulation](images/counter_tb_enable.png){width=100%}
+
+
+![Figure 8: Counter Max Count Questa Simulation](images/counter_tb_max.png){width=100%}
+
+
+![Figure 9: Lab 1 Top Module Questa Simulation](images/lab1_tb_all.png){width=100%}
+
 
 ## Conclusion
+TODO: Did everything work?
+I spent about 25-30 hours on this lab.
 
 ## AI Prototype Summary
-
-
-
-Specs:
-Documentation embedded in a well-structured, concise report with one section per major deliverable. Sections should match structure of other specs.
-Spoiler tags are used to hide screenshots and code. Some unspoilered entries (~1 waveform, essential code snippets) allowed if they are essential to the narrative, kept to a minimum.
-Writeup contains minimal spelling or grammar issues and any errors do not significantly detract from clarity of the writeup.
-Statement of whether the design meets all the requirements. If not, list the shortcomings.
-AI prototype attempted and some reflection is recorded.
-Number of hours spent working on the lab are included.
-(Optional) List comments or suggestions on what was particularly good about the assignment or what you think needs to change in future versions.
+TODO: Finish this
