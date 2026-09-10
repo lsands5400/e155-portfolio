@@ -347,10 +347,10 @@ module ssdp_tb();
 endmodule
 :::
 # Block Diagram 
-![Figure 3: Block diagram](images/block_diagram.jpeg){width=80%}
+![Figure 3: Block diagram](images/new_block.jpeg){width=80%}
 
 # Schematic
-![Figure 4: Schematic](images/IMG_1291.jpeg){width=80%}
+![Figure 4: Schematic](images/new_schmatic.jpeg.jpeg){width=80%}
 
 ## Results and Discussion
 # Testbench Simulation
@@ -367,7 +367,7 @@ The active low reset functionality sets the counter back to zero.
 :::
 
 ::: {.callout-caution collapse="true" title="Click for Questa Simulation"}
-![Figure 7: Counter Enable Questa Simulation](images/counter_tb_enable.png){width=100%}
+![Figure 7: Counter Enable Questa Simulation](images/counter_enable_new.png.png){width=100%}
 :::
 When high, enable allows the counter to increment. When low, the counter stays at the same value unless reset is pressed.
 
@@ -385,5 +385,41 @@ All of the integrated modules and LED logic works.
 TODO: Did everything work?
 I spent about 25-30 hours on this lab.
 
-## AI Prototype Summary
-TODO: Finish this
+## AI Prototype SummaryI gave ChatGPT the promtp and it gave me this code:
+
+module led_blink (
+    output logic led
+);
+
+    // UP5K internal high-frequency oscillator
+    logic clk;
+
+    SB_HFOSC #(
+        .CLKHF_DIV("0b00")    // 48 MHz
+    ) hfosc (
+        .CLKHFPU(1'b1),       // Power up oscillator
+        .CLKHFEN(1'b1),       // Enable oscillator
+        .CLKHF(clk)
+    );
+
+    // 48 MHz / (2 * 12,000,000) = 2 Hz
+    localparam int unsigned HALF_PERIOD = 12_000_000;
+
+    logic [23:0] counter;
+
+    always_ff @(posedge clk) begin
+        if (counter == HALF_PERIOD - 1) begin
+            counter <= '0;
+            led     <= ~led;
+        end
+        else begin
+            counter <= counter + 1'b1;
+        end
+    end
+
+endmodule
+
+However, this failed to simulate, so I asked it to fix it. 
+
+It gave me a new script but it asked for more detailed error messages. I could not find different error messages, so it could have been more helpful by telling me where to find them. 
+
