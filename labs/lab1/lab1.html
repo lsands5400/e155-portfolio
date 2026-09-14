@@ -133,6 +133,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#design-and-testing-methodology" id="toc-design-and-testing-methodology" class="nav-link" data-scroll-target="#design-and-testing-methodology">Design and Testing Methodology</a></li>
   <li><a href="#technical-documentation" id="toc-technical-documentation" class="nav-link" data-scroll-target="#technical-documentation">Technical Documentation</a></li>
+  <li><a href="#block-diagram" id="toc-block-diagram" class="nav-link" data-scroll-target="#block-diagram">Block Diagram</a></li>
   <li><a href="#schematic" id="toc-schematic" class="nav-link" data-scroll-target="#schematic">Schematic</a>
   <ul class="collapse">
   <li><a href="#results-and-discussion" id="toc-results-and-discussion" class="nav-link" data-scroll-target="#results-and-discussion">Results and Discussion</a></li>
@@ -216,7 +217,20 @@ ul.task-list li input[type="checkbox"] {
 <section id="technical-documentation" class="level2">
 <h2 class="anchored" data-anchor-id="technical-documentation">Technical Documentation</h2>
 <p>The source code for the project can be found in the associated <a href="https://github.com/lsands5400/e155-lab1.git">Github repository</a>.</p>
-<p>Code: ::: {.callout-caution collapse=“true” title=“Click for Questa Simulation”} // Lindsey Sands // lsands@g.hmc.edu // 09-06-2026 // This is the top module for E155 Lab 1. module lab1_ls(input logic reset, en, input logic[3:0] s,</p>
+<p>Code:</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="Click for Code">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Click for Code
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>// Lindsey Sands // lsands@g.hmc.edu // 09-06-2026 // This is the top module for E155 Lab 1. module lab1_ls(input logic reset, en, input logic[3:0] s,</p>
 <pre><code>      output logic[2:0] led, 
       output logic[6:0] seg);
       
@@ -459,13 +473,25 @@ end
   
   #100 $stop;
   end</code></pre>
-<p>endmodule ::: # Block Diagram <img src="images/new_block.jpeg" class="img-fluid" style="width:80.0%" alt="Figure 3: Block diagram"></p>
+<p>endmodule</p>
+</div>
+</div>
+</div>
+</section>
+<section id="block-diagram" class="level1">
+<h1>Block Diagram</h1>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/new_block.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>Figure 3: Block diagram</figcaption>
+</figure>
+</div>
 </section>
 <section id="schematic" class="level1">
 <h1>Schematic</h1>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/new_schmatic.jpeg.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
+<p><img src="images/new_schmatic.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
 <figcaption>Figure 4: Schematic</figcaption>
 </figure>
 </div>
@@ -476,28 +502,6 @@ end
 <section id="testbench-simulation" class="level1">
 <h1>Testbench Simulation</h1>
 <p>All of the testbenches ran successfully with no errors.</p>
-<div class="callout callout-style-default callout-caution callout-titled" title="Click for Questa Simulation">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Caution</span>Click for Questa Simulation
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/ssdp_tb_ss_final.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption>Figure 5: Seven Segment Display Questa Simulation</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<p>All 16 LED configurations work.</p>
 <div class="callout callout-style-default callout-caution callout-titled" title="Click for Questa Simulation">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -510,10 +514,16 @@ end
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p><img src="images/counter_tb_reset.png" class="img-fluid" style="width:100.0%" alt="Figure 6: Counter Reset Questa Simulation"> The active low reset functionality sets the counter back to zero.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/ssdp_tb_ss_final.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Figure 5: Seven Segment Display Questa Simulation</figcaption>
+</figure>
 </div>
 </div>
 </div>
+</div>
+<p>All 16 LED configurations work.</p>
 <div class="callout callout-style-default callout-caution callout-titled" title="Click for Questa Simulation">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -526,16 +536,10 @@ end
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/counter_enable_new.png.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption>Figure 7: Counter Enable Questa Simulation</figcaption>
-</figure>
+<p><img src="images/counter_tb_reset.png" class="img-fluid" style="width:100.0%" alt="Figure 6: Counter Reset Questa Simulation"> The active low reset functionality sets the counter back to zero.</p>
 </div>
 </div>
 </div>
-</div>
-<p>When high, enable allows the counter to increment. When low, the counter stays at the same value unless reset is pressed.</p>
 <div class="callout callout-style-default callout-caution callout-titled" title="Click for Questa Simulation">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -550,14 +554,14 @@ end
 <div class="callout-body-container callout-body">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/counter_tb_max.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption>Figure 8: Counter Max Count Questa Simulation</figcaption>
+<p><img src="images/counter_enable_new.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Figure 7: Counter Enable Questa Simulation</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
-<p>When the counter reaches the maximum count, instead of continuing to count up, it resets to 0.</p>
+<p>When high, enable allows the counter to increment. When low, the counter stays at the same value unless reset is pressed.</p>
 <div class="callout callout-style-default callout-caution callout-titled" title="Click for Questa Simulation">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -569,6 +573,28 @@ end
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/counter_tb_max.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Figure 8: Counter Max Count Questa Simulation</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>When the counter reaches the maximum count, instead of continuing to count up, it resets to 0.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="Click for Questa Simulation">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Click for Questa Simulation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
