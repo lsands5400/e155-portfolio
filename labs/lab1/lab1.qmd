@@ -33,7 +33,8 @@ The top module handles the logic of the last two LEDs, assigning the XOR and AND
 The source code for the project can be found in the associated [Github repository](https://github.com/lsands5400/e155-lab1.git).
 
 Code:
-::: {.callout-caution collapse="true" title="Click for Questa Simulation"}
+
+::: {.callout-caution collapse="true" title="Click for Code"}
   // Lindsey Sands
   // lsands@g.hmc.edu
   // 09-06-2026
@@ -346,11 +347,12 @@ Code:
       end
   endmodule
 :::
+
 # Block Diagram 
 ![Figure 3: Block diagram](images/new_block.jpeg){width=80%}
 
 # Schematic
-![Figure 4: Schematic](images/new_schmatic.jpeg.jpeg){width=80%}
+![Figure 4: Schematic](images/schematic.jpeg){width=80%}
 
 ## Results and Discussion
 # Testbench Simulation
@@ -367,7 +369,7 @@ The active low reset functionality sets the counter back to zero.
 :::
 
 ::: {.callout-caution collapse="true" title="Click for Questa Simulation"}
-![Figure 7: Counter Enable Questa Simulation](images/counter_enable_new.png.png){width=100%}
+![Figure 7: Counter Enable Questa Simulation](images/counter_enable_new.png){width=100%}
 :::
 When high, enable allows the counter to increment. When low, the counter stays at the same value unless reset is pressed.
 
