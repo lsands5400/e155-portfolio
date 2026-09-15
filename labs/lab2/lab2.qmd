@@ -6,22 +6,53 @@ date: "9/15/26"
 categories:
   - reflection
   - labreport
-draft: true
+draft: false
 ---
 
 ## Introduction
+In this lab, an FPGA was programmed to create multiplexer functionality for a dual seven segment display. Additionally, the FPGA was programmed to scan a keypad for pressed inputs. 
 
 ## Design and Testing Methodology
+For both designs, a 48 MHz clock signal was generated from the on-board high-speed oscillator (HSOSC) from the iCE40 UltraPlus primitive library.
+
+The counter module from Lab 1 was reused for both designs. For the keypad scanner, the parameters were set to width = 23 and max = 1,500,000 based on the required output frequency of 2 Hz, as calculated below. 
+
+![Figure 1: Calculation for Output at 2 Hz](images/Scanner_Counter_Calculation.jpeg){width=80%}
+
+The scanner module also has enable and reset functionality. 
+
+Additionally, there were calculations performed to figure out the proper pull-down resistor size for the transistor to draw enough current for the anodes of the seven segment display.
+
+![Figure 2: Calculation for current draw for anode transisitors](images/current_calc.jpeg){width=80%}
+
+A standard resistor size of 300 Ω was chosen based on the calculation in Figure 2.
+
+Due to the number of pins required, the designs are split into two different top modules and run with two different .bin files.
 
 ## Technical Documentation
+The source code for the project can be found in the associated [Github repository](https://github.com/lsands5400/e155-Lab-2).
 
-# Block Diagram 
 
-# Schematic
+# Block Diagrams 
+![Figure 3: Block diagram for Mutilplexed Seven Segment Display](images/mux_block_diagram.jpeg){width=80%}
+
+![Figure 4: Block diagram for Keypad Scanner](images/scan_block_diagram.jpeg){width=80%}
+
+
+# Schematics
 
 ## Results and Discussion
 
 # Testbench Simulation
+All of the testbenches ran successfully with no errors. 
+
+::: {.callout-caution collapse="true" title="Click for Questa Simulation"}
+![Figure 7: Scanner Questa Simulation](images/scanner_tb.png){width=100%}
+:::
+
+::: {.callout-caution collapse="true" title="Click for Questa Simulation"}
+![Figure 8: Top Module Questa Simulation](images/lab2_tb.png){width=100%}
+:::
 
 ## Conclusion
 
