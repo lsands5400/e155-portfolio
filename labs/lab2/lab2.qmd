@@ -242,6 +242,6 @@ endmodule
 
 The first was able to synthesize. It was interesting because it manually set the other anode to all 0 bits instead of controlling the anode. 
 
-The second also succeeded in synthesis. It uses a similar stratgey to that above but with my given modules. 
+The second also succeeded in synthesis. It uses a similar strategy to that above but with my given modules. 
 
 Both outputs seem pretty reasonable.
