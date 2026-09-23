@@ -25,12 +25,13 @@ Additionally, there were calculations performed to figure out the proper pull-do
 
 ![Figure 2: Calculation for current draw for anode transisitors](images/current_calc.jpeg){width=80%}
 
-A standard resistor size of 300 Ω was chosen based on the calculation in Figure 2.
+A standard resistor size of 330 Ω was chosen based on the calculation in Figure 2.
 
 Due to the number of pins required, the designs are split into two different top modules and run with two different .bin files.
 
 ## Technical Documentation
 The source code for the project can be found in the associated [Github repository](https://github.com/lsands5400/e155-Lab-2).
+
 
 
 # Block Diagrams 
@@ -64,7 +65,7 @@ The top module exercises multiplexing functionality and LED driving functionalit
 
 ## Conclusion
 
-Both the multiplexed seven segment display and keypad scanner worked! I worked on the lab for ~20 hours.
+Both the multiplexed seven segment display and keypad scanner worked! I worked on the lab for ~22 hours.
 
 ## AI Prototype Summary
 
