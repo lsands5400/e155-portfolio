@@ -11,7 +11,70 @@
     "href": "labs.html",
     "title": "E155 Labs",
     "section": "",
-    "text": "Coming Soon… ## Lab 2 - Multiplexed 7-Segment Display ## Lab 3 - Keypad Scanner ## Lab 4 - Digital Audio ## Lab 5 - Interrupts ## Lab 6 - The Internet of Things and Serial Peripheral Interface ## Lab 7 - The Advanced Encryption Standard (AES)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLab 2\n\n\nMultiplexed 7-Segment Display\n\n\n\n\n\nSep 15, 2026\n\n\nLindsey Sands\n\n\n\n\n\n\n\n\n\n\n\n\nLab 1\n\n\nFPGA and MCU Setup\n\n\n\n\n\nSep 9, 2026\n\n\nLindsey Sands\n\n\n\n\n\nNo matching items"
+    "text": "Coming Soon… ## Lab 3 - Keypad Scanner ## Lab 4 - Digital Audio ## Lab 5 - Interrupts ## Lab 6 - The Internet of Things and Serial Peripheral Interface ## Lab 7 - The Advanced Encryption Standard (AES)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLab 2\n\n\nMultiplexed 7-Segment Display\n\n\n\n\n\nSep 15, 2026\n\n\nLindsey Sands\n\n\n\n\n\n\n\n\n\n\n\n\nLab 1\n\n\nFPGA and MCU Setup\n\n\n\n\n\nSep 9, 2026\n\n\nLindsey Sands\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "labs/lab2/lab2.html",
+    "href": "labs/lab2/lab2.html",
+    "title": "Lab 2",
+    "section": "",
+    "text": "In this lab, an FPGA was programmed to create multiplexer functionality for a dual seven segment display. Additionally, the FPGA was programmed to scan a keypad for pressed inputs."
+  },
+  {
+    "objectID": "labs/lab2/lab2.html#introduction",
+    "href": "labs/lab2/lab2.html#introduction",
+    "title": "Lab 2",
+    "section": "",
+    "text": "In this lab, an FPGA was programmed to create multiplexer functionality for a dual seven segment display. Additionally, the FPGA was programmed to scan a keypad for pressed inputs."
+  },
+  {
+    "objectID": "labs/lab2/lab2.html#design-and-testing-methodology",
+    "href": "labs/lab2/lab2.html#design-and-testing-methodology",
+    "title": "Lab 2",
+    "section": "Design and Testing Methodology",
+    "text": "Design and Testing Methodology\nFor both designs, a 48 MHz clock signal was generated from the on-board high-speed oscillator (HSOSC) from the iCE40 UltraPlus primitive library.\nThe counter module from Lab 1 was reused for both designs. For the keypad scanner, the parameters were set to width = 23 and max = 1,500,000 based on the required output frequency of 2 Hz, as calculated below.\n\n\n\nFigure 1: Calculation for Output at 2 Hz\n\n\nThe scanner module also has enable and reset functionality.\nAdditionally, there were calculations performed to figure out the proper pull-down resistor size for the transistor to draw enough current for the anodes of the seven segment display.\n\n\n\nFigure 2: Calculation for current draw for anode transisitors\n\n\nA standard resistor size of 330 Ω was chosen based on the calculation in Figure 2.\nDue to the number of pins required, the designs are split into two different top modules and run with two different .bin files."
+  },
+  {
+    "objectID": "labs/lab2/lab2.html#technical-documentation",
+    "href": "labs/lab2/lab2.html#technical-documentation",
+    "title": "Lab 2",
+    "section": "Technical Documentation",
+    "text": "Technical Documentation\nThe source code for the project can be found in the associated Github repository."
+  },
+  {
+    "objectID": "labs/lab2/lab2.html#results-and-discussion",
+    "href": "labs/lab2/lab2.html#results-and-discussion",
+    "title": "Lab 2",
+    "section": "Results and Discussion",
+    "text": "Results and Discussion"
+  },
+  {
+    "objectID": "labs/lab2/lab2.html#conclusion",
+    "href": "labs/lab2/lab2.html#conclusion",
+    "title": "Lab 2",
+    "section": "Conclusion",
+    "text": "Conclusion\nBoth the multiplexed seven segment display and keypad scanner worked! I worked on the lab for ~22 hours."
+  },
+  {
+    "objectID": "labs/lab2/lab2.html#ai-prototype-summary",
+    "href": "labs/lab2/lab2.html#ai-prototype-summary",
+    "title": "Lab 2",
+    "section": "AI Prototype Summary",
+    "text": "AI Prototype Summary\nI had AI generate code based on the given prompt.\n\n\n\n\n\n\nCautionClick for AI Code\n\n\n\n\n\n// Lindsey Sands // Time-multiplex two 7-segment displays using one decoder\nmodule seven_seg_mux ( input logic clk, input logic [3:0] input0, input logic [3:0] input1,\noutput logic [6:0]  seg0,\noutput logic [6:0]  seg1\n);\n// Counter used to switch between the two displays\nlogic mux_select;\n\n// Output of the single 4-bit -&gt; 7-segment decoder\nlogic [6:0] decoder_out;\n\n// Divide the clock down so the displays alternate\n// at a rate fast enough for persistence of vision.\nlogic [19:0] counter;\n\nalways_ff @(posedge clk) begin\n    counter &lt;= counter + 1'b1;\n\n    if (counter == 20'd0)\n        mux_select &lt;= ~mux_select;\nend\n\n// Select which 4-bit input goes to the decoder\nalways_comb begin\n    if (mux_select)\n        decoder_out = seven_seg_decode(input1);\n    else\n        decoder_out = seven_seg_decode(input0);\nend\n\n// Send decoder output to the selected display.\n// The other display is blanked.\nalways_comb begin\n    if (mux_select) begin\n        seg0 = 7'b1111111;   // off (common anode)\n        seg1 = decoder_out;\n    end\n    else begin\n        seg0 = decoder_out;\n        seg1 = 7'b1111111;   // off (common anode)\n    end\nend\n\n// Single 4-bit -&gt; 7-segment decoder\nfunction automatic logic [6:0] seven_seg_decode(input logic [3:0] value);\n    case (value)\n        4'h0: seven_seg_decode = 7'b1000000;\n        4'h1: seven_seg_decode = 7'b1111001;\n        4'h2: seven_seg_decode = 7'b0100100;\n        4'h3: seven_seg_decode = 7'b0110000;\n        4'h4: seven_seg_decode = 7'b0011001;\n        4'h5: seven_seg_decode = 7'b0010010;\n        4'h6: seven_seg_decode = 7'b0000010;\n        4'h7: seven_seg_decode = 7'b1111000;\n        4'h8: seven_seg_decode = 7'b0000000;\n        4'h9: seven_seg_decode = 7'b0010000;\n        4'hA: seven_seg_decode = 7'b0001000;\n        4'hB: seven_seg_decode = 7'b0000011;\n        4'hC: seven_seg_decode = 7'b1000110;\n        4'hD: seven_seg_decode = 7'b0100001;\n        4'hE: seven_seg_decode = 7'b0000110;\n        4'hF: seven_seg_decode = 7'b0001110;\n        default: seven_seg_decode = 7'b1111111;\n    endcase\nendfunction\nendmodule\n\n\n\nThen, I gave it the context of my previous counter and seven segment display modules.\n\n\n\n\n\n\nCautionClick for AI Code\n\n\n\n\n\n// Lindsey Sands // lsands@g.hmc.edu // 09-16-2026 // // Time multiplexes one seven-segment decoder between // two 4-bit inputs and two 7-bit outputs. // // The seven-segment decoder is common-anode, so: // 0 = LED segment ON // 1 = LED segment OFF // // Each display is alternately driven so that both // appear to be displaying their respective values.\nmodule sevenSegMux #( parameter int width = 16, parameter int max = 50_000 )( input logic int_osc, input logic reset, input logic [3:0] s1, input logic [3:0] s2, output logic [6:0] seg1, output logic [6:0] seg2 );\n// Counter used to control multiplexing frequency\nlogic [width-1:0] mux_counter;\n\n// Selects which display is currently active\nlogic mux_select;\n\n// Output of the single seven-segment decoder\nlogic [6:0] decoded_seg;\n\n// Instantiate the provided counter\ncounter #(\n    .width(width),\n    .max(max)\n) mux_counter_inst (\n    .int_osc(int_osc),\n    .reset(reset),\n    .en(1'b1),\n    .counter(mux_counter)\n);\n\n// Use the most significant counter bit to switch\n// between the two displays.\nassign mux_select = mux_counter[width-1];\n\n// Select which 4-bit input goes into the decoder\nlogic [3:0] mux_input;\n\nalways_comb begin\n    if (mux_select)\n        mux_input = s2;\n    else\n        mux_input = s1;\nend\n\n// Instantiate the provided seven-segment decoder\nsevenSegDP decoder (\n    .s(mux_input),\n    .seg(decoded_seg)\n);\n\n// Send the decoder output to the currently selected\n// display and turn the other display OFF.\nalways_comb begin\n\n    if (!mux_select) begin\n        seg1 = decoded_seg;\n        seg2 = 7'b1111111;   // all segments OFF\n    end\n\n    else begin\n        seg1 = 7'b1111111;   // all segments OFF\n        seg2 = decoded_seg;\n    end\n\nend\nendmodule\n\n\n\nThe first was able to synthesize. It was interesting because it manually set the other anode to all 0 bits instead of controlling the anode.\nThe second also succeeded in synthesis. It uses a similar stratgey to that above but with my given modules.\nBoth outputs seem pretty reasonable."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "E155 Portfolio",
+    "section": "",
+    "text": "Hi! My name is Lindsey Sands. I am a senior engineering major at Harvey Mudd College. My humanities concentration is music because I love to play the French horn and take lessons at Pomona. I hope to graduate and find an industry job in either software, firmware, or robotics."
+  },
+  {
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "E155 Blog",
+    "section": "",
+    "text": "Hello Quarto\n\n\nWelcome to my Quarto portfolio\n\n\n\n\n\nAug 23, 2024\n\n\nJosh Brake\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "labs/lab1/lab1.html",
@@ -61,68 +124,5 @@
     "title": "Lab 1",
     "section": "AI Prototype Summary",
     "text": "AI Prototype Summary\nI gave ChatGPT the promtp and it gave me this code:\nmodule led_blink ( output logic led );\n// UP5K internal high-frequency oscillator\nlogic clk;\n\nSB_HFOSC #(\n    .CLKHF_DIV(\"0b00\")    // 48 MHz\n) hfosc (\n    .CLKHFPU(1'b1),       // Power up oscillator\n    .CLKHFEN(1'b1),       // Enable oscillator\n    .CLKHF(clk)\n);\n\n// 48 MHz / (2 * 12,000,000) = 2 Hz\nlocalparam int unsigned HALF_PERIOD = 12_000_000;\n\nlogic [23:0] counter;\n\nalways_ff @(posedge clk) begin\n    if (counter == HALF_PERIOD - 1) begin\n        counter &lt;= '0;\n        led     &lt;= ~led;\n    end\n    else begin\n        counter &lt;= counter + 1'b1;\n    end\nend\nendmodule\nHowever, this failed to simulate, so I asked it to fix it.\nIt gave me a new script but it asked for more detailed error messages. I could not find different error messages, so it could have been more helpful by telling me where to find them."
-  },
-  {
-    "objectID": "blog.html",
-    "href": "blog.html",
-    "title": "E155 Blog",
-    "section": "",
-    "text": "Hello Quarto\n\n\nWelcome to my Quarto portfolio\n\n\n\n\n\nAug 23, 2024\n\n\nJosh Brake\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "E155 Portfolio",
-    "section": "",
-    "text": "Hi! My name is Lindsey Sands. I am a senior engineering major at Harvey Mudd College. My humanities concentration is music because I love to play the French horn and take lessons at Pomona. I hope to graduate and find an industry job in either software, firmware, or robotics."
-  },
-  {
-    "objectID": "labs/lab2/lab2.html",
-    "href": "labs/lab2/lab2.html",
-    "title": "Lab 2",
-    "section": "",
-    "text": "In this lab, an FPGA was programmed to create multiplexer functionality for a dual seven segment display. Additionally, the FPGA was programmed to scan a keypad for pressed inputs."
-  },
-  {
-    "objectID": "labs/lab2/lab2.html#introduction",
-    "href": "labs/lab2/lab2.html#introduction",
-    "title": "Lab 2",
-    "section": "",
-    "text": "In this lab, an FPGA was programmed to create multiplexer functionality for a dual seven segment display. Additionally, the FPGA was programmed to scan a keypad for pressed inputs."
-  },
-  {
-    "objectID": "labs/lab2/lab2.html#design-and-testing-methodology",
-    "href": "labs/lab2/lab2.html#design-and-testing-methodology",
-    "title": "Lab 2",
-    "section": "Design and Testing Methodology",
-    "text": "Design and Testing Methodology\nFor both designs, a 48 MHz clock signal was generated from the on-board high-speed oscillator (HSOSC) from the iCE40 UltraPlus primitive library.\nThe counter module from Lab 1 was reused for both designs. For the keypad scanner, the parameters were set to width = 23 and max = 1,500,000 based on the required output frequency of 2 Hz, as calculated below.\n\n\n\nFigure 1: Calculation for Output at 2 Hz\n\n\nThe scanner module also has enable and reset functionality.\nAdditionally, there were calculations performed to figure out the proper pull-down resistor size for the transistor to draw enough current for the anodes of the seven segment display.\n\n\n\nFigure 2: Calculation for current draw for anode transisitors\n\n\nA standard resistor size of 300 Ω was chosen based on the calculation in Figure 2.\nDue to the number of pins required, the designs are split into two different top modules and run with two different .bin files."
-  },
-  {
-    "objectID": "labs/lab2/lab2.html#technical-documentation",
-    "href": "labs/lab2/lab2.html#technical-documentation",
-    "title": "Lab 2",
-    "section": "Technical Documentation",
-    "text": "Technical Documentation\nThe source code for the project can be found in the associated Github repository."
-  },
-  {
-    "objectID": "labs/lab2/lab2.html#results-and-discussion",
-    "href": "labs/lab2/lab2.html#results-and-discussion",
-    "title": "Lab 2",
-    "section": "Results and Discussion",
-    "text": "Results and Discussion"
-  },
-  {
-    "objectID": "labs/lab2/lab2.html#conclusion",
-    "href": "labs/lab2/lab2.html#conclusion",
-    "title": "Lab 2",
-    "section": "Conclusion",
-    "text": "Conclusion\nBoth the multiplexed seven segment display and keypad scanner worked! I worked on the lab for ~20 hours."
-  },
-  {
-    "objectID": "labs/lab2/lab2.html#ai-prototype-summary",
-    "href": "labs/lab2/lab2.html#ai-prototype-summary",
-    "title": "Lab 2",
-    "section": "AI Prototype Summary",
-    "text": "AI Prototype Summary\nI had AI generate code based on the given prompt.\n\n\n\n\n\n\nCautionClick for AI Code\n\n\n\n\n\n// Lindsey Sands // Time-multiplex two 7-segment displays using one decoder\nmodule seven_seg_mux ( input logic clk, input logic [3:0] input0, input logic [3:0] input1,\noutput logic [6:0]  seg0,\noutput logic [6:0]  seg1\n);\n// Counter used to switch between the two displays\nlogic mux_select;\n\n// Output of the single 4-bit -&gt; 7-segment decoder\nlogic [6:0] decoder_out;\n\n// Divide the clock down so the displays alternate\n// at a rate fast enough for persistence of vision.\nlogic [19:0] counter;\n\nalways_ff @(posedge clk) begin\n    counter &lt;= counter + 1'b1;\n\n    if (counter == 20'd0)\n        mux_select &lt;= ~mux_select;\nend\n\n// Select which 4-bit input goes to the decoder\nalways_comb begin\n    if (mux_select)\n        decoder_out = seven_seg_decode(input1);\n    else\n        decoder_out = seven_seg_decode(input0);\nend\n\n// Send decoder output to the selected display.\n// The other display is blanked.\nalways_comb begin\n    if (mux_select) begin\n        seg0 = 7'b1111111;   // off (common anode)\n        seg1 = decoder_out;\n    end\n    else begin\n        seg0 = decoder_out;\n        seg1 = 7'b1111111;   // off (common anode)\n    end\nend\n\n// Single 4-bit -&gt; 7-segment decoder\nfunction automatic logic [6:0] seven_seg_decode(input logic [3:0] value);\n    case (value)\n        4'h0: seven_seg_decode = 7'b1000000;\n        4'h1: seven_seg_decode = 7'b1111001;\n        4'h2: seven_seg_decode = 7'b0100100;\n        4'h3: seven_seg_decode = 7'b0110000;\n        4'h4: seven_seg_decode = 7'b0011001;\n        4'h5: seven_seg_decode = 7'b0010010;\n        4'h6: seven_seg_decode = 7'b0000010;\n        4'h7: seven_seg_decode = 7'b1111000;\n        4'h8: seven_seg_decode = 7'b0000000;\n        4'h9: seven_seg_decode = 7'b0010000;\n        4'hA: seven_seg_decode = 7'b0001000;\n        4'hB: seven_seg_decode = 7'b0000011;\n        4'hC: seven_seg_decode = 7'b1000110;\n        4'hD: seven_seg_decode = 7'b0100001;\n        4'hE: seven_seg_decode = 7'b0000110;\n        4'hF: seven_seg_decode = 7'b0001110;\n        default: seven_seg_decode = 7'b1111111;\n    endcase\nendfunction\nendmodule\n\n\n\nThen, I gave it the context of my previous counter and seven segment display modules.\n\n\n\n\n\n\nCautionClick for AI Code\n\n\n\n\n\n// Lindsey Sands // lsands@g.hmc.edu // 09-16-2026 // // Time multiplexes one seven-segment decoder between // two 4-bit inputs and two 7-bit outputs. // // The seven-segment decoder is common-anode, so: // 0 = LED segment ON // 1 = LED segment OFF // // Each display is alternately driven so that both // appear to be displaying their respective values.\nmodule sevenSegMux #( parameter int width = 16, parameter int max = 50_000 )( input logic int_osc, input logic reset, input logic [3:0] s1, input logic [3:0] s2, output logic [6:0] seg1, output logic [6:0] seg2 );\n// Counter used to control multiplexing frequency\nlogic [width-1:0] mux_counter;\n\n// Selects which display is currently active\nlogic mux_select;\n\n// Output of the single seven-segment decoder\nlogic [6:0] decoded_seg;\n\n// Instantiate the provided counter\ncounter #(\n    .width(width),\n    .max(max)\n) mux_counter_inst (\n    .int_osc(int_osc),\n    .reset(reset),\n    .en(1'b1),\n    .counter(mux_counter)\n);\n\n// Use the most significant counter bit to switch\n// between the two displays.\nassign mux_select = mux_counter[width-1];\n\n// Select which 4-bit input goes into the decoder\nlogic [3:0] mux_input;\n\nalways_comb begin\n    if (mux_select)\n        mux_input = s2;\n    else\n        mux_input = s1;\nend\n\n// Instantiate the provided seven-segment decoder\nsevenSegDP decoder (\n    .s(mux_input),\n    .seg(decoded_seg)\n);\n\n// Send the decoder output to the currently selected\n// display and turn the other display OFF.\nalways_comb begin\n\n    if (!mux_select) begin\n        seg1 = decoded_seg;\n        seg2 = 7'b1111111;   // all segments OFF\n    end\n\n    else begin\n        seg1 = 7'b1111111;   // all segments OFF\n        seg2 = decoded_seg;\n    end\n\nend\nendmodule\n\n\n\nThe first was able to synthesize. It was interesting because it manually set the other anode to all 0 bits instead of controlling the anode.\nThe second also succeeded in synthesis. It uses a similar stratgey to that above but with my given modules.\nBoth outputs seem pretty reasonable."
   }
 ]
