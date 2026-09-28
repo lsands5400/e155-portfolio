@@ -1,0 +1,46 @@
+---
+title: "Lab 2"
+description: "Digital Audio"
+author: "Lindsey Sands"
+date: "9/30/26"
+categories:
+  - reflection
+  - labreport
+draft: false
+---
+
+## Introduction
+In this lab, an MCU was programmed to play music by varying output frequencies and durations.
+
+## Design and Testing Methodology
+
+
+![Figure 1: Calculation for Output at 2 Hz](images/Scanner_Counter_Calculation.jpeg){width=80%}
+
+
+![Figure 2: Calculation for current draw for anode transisitors](images/current_calc.jpeg){width=80%}
+
+
+## Technical Documentation
+The source code for the project can be found in the associated [Github repository](https://github.com/lsands5400/e155-lab-4).
+
+
+# Block Diagrams 
+![Figure 3: Block diagram for Mutilplexed Seven Segment Display](images/mux_block_diagram.jpeg){width=80%}
+
+![Figure 4: Block diagram for Keypad Scanner](images/scan_block_diagram.jpeg){width=80%}
+
+
+# Schematics
+
+![Figure 5: Schematic for Multiplexed Seven Segment Display](images/mux_schematic.jpeg){width=80%}
+
+![Figure 6: Schematic for Keypad Scanner](images/scan_schematic.jpeg){width=80%}
+
+## Results and Discussion
+
+
+## Conclusion
+
+
+## AI Prototype Summary
