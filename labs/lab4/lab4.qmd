@@ -1,5 +1,5 @@
 ---
-title: "Lab 2"
+title: "Lab 4"
 description: "Digital Audio"
 author: "Lindsey Sands"
 date: "9/30/26"

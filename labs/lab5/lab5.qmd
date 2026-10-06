@@ -1,0 +1,40 @@
+---
+title: "Lab 5"
+description: "Interrupts"
+author: "Lindsey Sands"
+date: "10/06/26"
+categories:
+  - reflection
+  - labreport
+draft: false
+---
+
+## Introduction
+In this lab, an MCU was programmed to take data from a quadrature encoder on a motor and calculate the angular velocity output of the motor.
+
+## Design and Testing Methodology
+To calculate the angular velocity, we need to take advantage of the positions of the two sensors in the quadrature encoder. 
+
+![Figure 1: Velocity Calculations](images/Scanner_Counter_Calculation.jpeg){width=80%}
+
+To ensure an update rate of at least 1 Hz, we can use the delaymillis() from the TIMx library. With a base of 1 ms for the counter, we can set the delay to 1000 ms to get an output of 1 Hz. The velocity will update every 1 second interval.
+
+## Technical Documentation
+The source code for the project can be found in the associated [Github repository](https://github.com/lsands5400/e155-lab-4).
+
+# Flowchart
+The flowchart for the interrupts is as shown below.
+
+![Figure 2: Flowchart for Sensor Interrupts](images/mux_schematic.jpeg){width=80%}
+
+# Schematics
+The connection from the MCU to the motor is as shown below.
+![Figure 3: Schematic for Motor Interrupts](images/mux_schematic.jpeg){width=80%}
+
+## Results and Discussion
+
+
+## Conclusion
+The MCU correctly calculates the velocity from the quadrature encoder at about 2.5 rev/s. I spent about 15 hours working on this lab. 
+
+## AI Prototype Summary
