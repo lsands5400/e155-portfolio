@@ -11,7 +11,56 @@
     "href": "labs.html",
     "title": "E155 Labs",
     "section": "",
-    "text": "Coming Soon… ## Lab 3 - Keypad Scanner ## Lab 4 - Digital Audio ## Lab 5 - Interrupts ## Lab 6 - The Internet of Things and Serial Peripheral Interface ## Lab 7 - The Advanced Encryption Standard (AES)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLab 2\n\n\nMultiplexed 7-Segment Display\n\n\n\n\n\nSep 15, 2026\n\n\nLindsey Sands\n\n\n\n\n\n\n\n\n\n\n\n\nLab 1\n\n\nFPGA and MCU Setup\n\n\n\n\n\nSep 9, 2026\n\n\nLindsey Sands\n\n\n\n\n\nNo matching items"
+    "text": "Coming Soon… ## Lab 3 - Keypad Scanner ## Lab 4 - Digital Audio ## Lab 5 - Interrupts ## Lab 6 - The Internet of Things and Serial Peripheral Interface ## Lab 7 - The Advanced Encryption Standard (AES)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLab 5\n\n\nInterrupts\n\n\n\n\n\nOct 6, 2026\n\n\nLindsey Sands\n\n\n\n\n\n\n\n\n\n\n\n\nLab 4\n\n\nDigital Audio\n\n\n\n\n\nSep 30, 2026\n\n\nLindsey Sands\n\n\n\n\n\n\n\n\n\n\n\n\nLab 2\n\n\nMultiplexed 7-Segment Display\n\n\n\n\n\nSep 15, 2026\n\n\nLindsey Sands\n\n\n\n\n\n\n\n\n\n\n\n\nLab 1\n\n\nFPGA and MCU Setup\n\n\n\n\n\nSep 9, 2026\n\n\nLindsey Sands\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "labs/lab4/lab4.html",
+    "href": "labs/lab4/lab4.html",
+    "title": "Lab 4",
+    "section": "",
+    "text": "In this lab, an MCU was programmed to play music by varying output frequencies and durations."
+  },
+  {
+    "objectID": "labs/lab4/lab4.html#introduction",
+    "href": "labs/lab4/lab4.html#introduction",
+    "title": "Lab 4",
+    "section": "",
+    "text": "In this lab, an MCU was programmed to play music by varying output frequencies and durations."
+  },
+  {
+    "objectID": "labs/lab4/lab4.html#design-and-testing-methodology",
+    "href": "labs/lab4/lab4.html#design-and-testing-methodology",
+    "title": "Lab 4",
+    "section": "Design and Testing Methodology",
+    "text": "Design and Testing Methodology\n\n\n\nFigure 1: Calculation for Output at 2 Hz\n\n\n\n\n\nFigure 2: Calculation for current draw for anode transisitors"
+  },
+  {
+    "objectID": "labs/lab4/lab4.html#technical-documentation",
+    "href": "labs/lab4/lab4.html#technical-documentation",
+    "title": "Lab 4",
+    "section": "Technical Documentation",
+    "text": "Technical Documentation\nThe source code for the project can be found in the associated Github repository."
+  },
+  {
+    "objectID": "labs/lab4/lab4.html#results-and-discussion",
+    "href": "labs/lab4/lab4.html#results-and-discussion",
+    "title": "Lab 4",
+    "section": "Results and Discussion",
+    "text": "Results and Discussion"
+  },
+  {
+    "objectID": "labs/lab4/lab4.html#conclusion",
+    "href": "labs/lab4/lab4.html#conclusion",
+    "title": "Lab 4",
+    "section": "Conclusion",
+    "text": "Conclusion"
+  },
+  {
+    "objectID": "labs/lab4/lab4.html#ai-prototype-summary",
+    "href": "labs/lab4/lab4.html#ai-prototype-summary",
+    "title": "Lab 4",
+    "section": "AI Prototype Summary",
+    "text": "AI Prototype Summary"
   },
   {
     "objectID": "labs/lab2/lab2.html",
@@ -60,7 +109,7 @@
     "href": "labs/lab2/lab2.html#ai-prototype-summary",
     "title": "Lab 2",
     "section": "AI Prototype Summary",
-    "text": "AI Prototype Summary\nI had AI generate code based on the given prompt.\n\n\n\n\n\n\nCautionClick for AI Code\n\n\n\n\n\n// Lindsey Sands // Time-multiplex two 7-segment displays using one decoder\nmodule seven_seg_mux ( input logic clk, input logic [3:0] input0, input logic [3:0] input1,\noutput logic [6:0]  seg0,\noutput logic [6:0]  seg1\n);\n// Counter used to switch between the two displays\nlogic mux_select;\n\n// Output of the single 4-bit -&gt; 7-segment decoder\nlogic [6:0] decoder_out;\n\n// Divide the clock down so the displays alternate\n// at a rate fast enough for persistence of vision.\nlogic [19:0] counter;\n\nalways_ff @(posedge clk) begin\n    counter &lt;= counter + 1'b1;\n\n    if (counter == 20'd0)\n        mux_select &lt;= ~mux_select;\nend\n\n// Select which 4-bit input goes to the decoder\nalways_comb begin\n    if (mux_select)\n        decoder_out = seven_seg_decode(input1);\n    else\n        decoder_out = seven_seg_decode(input0);\nend\n\n// Send decoder output to the selected display.\n// The other display is blanked.\nalways_comb begin\n    if (mux_select) begin\n        seg0 = 7'b1111111;   // off (common anode)\n        seg1 = decoder_out;\n    end\n    else begin\n        seg0 = decoder_out;\n        seg1 = 7'b1111111;   // off (common anode)\n    end\nend\n\n// Single 4-bit -&gt; 7-segment decoder\nfunction automatic logic [6:0] seven_seg_decode(input logic [3:0] value);\n    case (value)\n        4'h0: seven_seg_decode = 7'b1000000;\n        4'h1: seven_seg_decode = 7'b1111001;\n        4'h2: seven_seg_decode = 7'b0100100;\n        4'h3: seven_seg_decode = 7'b0110000;\n        4'h4: seven_seg_decode = 7'b0011001;\n        4'h5: seven_seg_decode = 7'b0010010;\n        4'h6: seven_seg_decode = 7'b0000010;\n        4'h7: seven_seg_decode = 7'b1111000;\n        4'h8: seven_seg_decode = 7'b0000000;\n        4'h9: seven_seg_decode = 7'b0010000;\n        4'hA: seven_seg_decode = 7'b0001000;\n        4'hB: seven_seg_decode = 7'b0000011;\n        4'hC: seven_seg_decode = 7'b1000110;\n        4'hD: seven_seg_decode = 7'b0100001;\n        4'hE: seven_seg_decode = 7'b0000110;\n        4'hF: seven_seg_decode = 7'b0001110;\n        default: seven_seg_decode = 7'b1111111;\n    endcase\nendfunction\nendmodule\n\n\n\nThen, I gave it the context of my previous counter and seven segment display modules.\n\n\n\n\n\n\nCautionClick for AI Code\n\n\n\n\n\n// Lindsey Sands // lsands@g.hmc.edu // 09-16-2026 // // Time multiplexes one seven-segment decoder between // two 4-bit inputs and two 7-bit outputs. // // The seven-segment decoder is common-anode, so: // 0 = LED segment ON // 1 = LED segment OFF // // Each display is alternately driven so that both // appear to be displaying their respective values.\nmodule sevenSegMux #( parameter int width = 16, parameter int max = 50_000 )( input logic int_osc, input logic reset, input logic [3:0] s1, input logic [3:0] s2, output logic [6:0] seg1, output logic [6:0] seg2 );\n// Counter used to control multiplexing frequency\nlogic [width-1:0] mux_counter;\n\n// Selects which display is currently active\nlogic mux_select;\n\n// Output of the single seven-segment decoder\nlogic [6:0] decoded_seg;\n\n// Instantiate the provided counter\ncounter #(\n    .width(width),\n    .max(max)\n) mux_counter_inst (\n    .int_osc(int_osc),\n    .reset(reset),\n    .en(1'b1),\n    .counter(mux_counter)\n);\n\n// Use the most significant counter bit to switch\n// between the two displays.\nassign mux_select = mux_counter[width-1];\n\n// Select which 4-bit input goes into the decoder\nlogic [3:0] mux_input;\n\nalways_comb begin\n    if (mux_select)\n        mux_input = s2;\n    else\n        mux_input = s1;\nend\n\n// Instantiate the provided seven-segment decoder\nsevenSegDP decoder (\n    .s(mux_input),\n    .seg(decoded_seg)\n);\n\n// Send the decoder output to the currently selected\n// display and turn the other display OFF.\nalways_comb begin\n\n    if (!mux_select) begin\n        seg1 = decoded_seg;\n        seg2 = 7'b1111111;   // all segments OFF\n    end\n\n    else begin\n        seg1 = 7'b1111111;   // all segments OFF\n        seg2 = decoded_seg;\n    end\n\nend\nendmodule\n\n\n\nThe first was able to synthesize. It was interesting because it manually set the other anode to all 0 bits instead of controlling the anode.\nThe second also succeeded in synthesis. It uses a similar stratgey to that above but with my given modules.\nBoth outputs seem pretty reasonable."
+    "text": "AI Prototype Summary\nI had AI generate code based on the given prompt.\n\n\n\n\n\n\nCautionClick for AI Code\n\n\n\n\n\n// Lindsey Sands // Time-multiplex two 7-segment displays using one decoder\nmodule seven_seg_mux ( input logic clk, input logic [3:0] input0, input logic [3:0] input1,\noutput logic [6:0]  seg0,\noutput logic [6:0]  seg1\n);\n// Counter used to switch between the two displays\nlogic mux_select;\n\n// Output of the single 4-bit -&gt; 7-segment decoder\nlogic [6:0] decoder_out;\n\n// Divide the clock down so the displays alternate\n// at a rate fast enough for persistence of vision.\nlogic [19:0] counter;\n\nalways_ff @(posedge clk) begin\n    counter &lt;= counter + 1'b1;\n\n    if (counter == 20'd0)\n        mux_select &lt;= ~mux_select;\nend\n\n// Select which 4-bit input goes to the decoder\nalways_comb begin\n    if (mux_select)\n        decoder_out = seven_seg_decode(input1);\n    else\n        decoder_out = seven_seg_decode(input0);\nend\n\n// Send decoder output to the selected display.\n// The other display is blanked.\nalways_comb begin\n    if (mux_select) begin\n        seg0 = 7'b1111111;   // off (common anode)\n        seg1 = decoder_out;\n    end\n    else begin\n        seg0 = decoder_out;\n        seg1 = 7'b1111111;   // off (common anode)\n    end\nend\n\n// Single 4-bit -&gt; 7-segment decoder\nfunction automatic logic [6:0] seven_seg_decode(input logic [3:0] value);\n    case (value)\n        4'h0: seven_seg_decode = 7'b1000000;\n        4'h1: seven_seg_decode = 7'b1111001;\n        4'h2: seven_seg_decode = 7'b0100100;\n        4'h3: seven_seg_decode = 7'b0110000;\n        4'h4: seven_seg_decode = 7'b0011001;\n        4'h5: seven_seg_decode = 7'b0010010;\n        4'h6: seven_seg_decode = 7'b0000010;\n        4'h7: seven_seg_decode = 7'b1111000;\n        4'h8: seven_seg_decode = 7'b0000000;\n        4'h9: seven_seg_decode = 7'b0010000;\n        4'hA: seven_seg_decode = 7'b0001000;\n        4'hB: seven_seg_decode = 7'b0000011;\n        4'hC: seven_seg_decode = 7'b1000110;\n        4'hD: seven_seg_decode = 7'b0100001;\n        4'hE: seven_seg_decode = 7'b0000110;\n        4'hF: seven_seg_decode = 7'b0001110;\n        default: seven_seg_decode = 7'b1111111;\n    endcase\nendfunction\nendmodule\n\n\n\nThen, I gave it the context of my previous counter and seven segment display modules.\n\n\n\n\n\n\nCautionClick for AI Code\n\n\n\n\n\n// Lindsey Sands // lsands@g.hmc.edu // 09-16-2026 // // Time multiplexes one seven-segment decoder between // two 4-bit inputs and two 7-bit outputs. // // The seven-segment decoder is common-anode, so: // 0 = LED segment ON // 1 = LED segment OFF // // Each display is alternately driven so that both // appear to be displaying their respective values.\nmodule sevenSegMux #( parameter int width = 16, parameter int max = 50_000 )( input logic int_osc, input logic reset, input logic [3:0] s1, input logic [3:0] s2, output logic [6:0] seg1, output logic [6:0] seg2 );\n// Counter used to control multiplexing frequency\nlogic [width-1:0] mux_counter;\n\n// Selects which display is currently active\nlogic mux_select;\n\n// Output of the single seven-segment decoder\nlogic [6:0] decoded_seg;\n\n// Instantiate the provided counter\ncounter #(\n    .width(width),\n    .max(max)\n) mux_counter_inst (\n    .int_osc(int_osc),\n    .reset(reset),\n    .en(1'b1),\n    .counter(mux_counter)\n);\n\n// Use the most significant counter bit to switch\n// between the two displays.\nassign mux_select = mux_counter[width-1];\n\n// Select which 4-bit input goes into the decoder\nlogic [3:0] mux_input;\n\nalways_comb begin\n    if (mux_select)\n        mux_input = s2;\n    else\n        mux_input = s1;\nend\n\n// Instantiate the provided seven-segment decoder\nsevenSegDP decoder (\n    .s(mux_input),\n    .seg(decoded_seg)\n);\n\n// Send the decoder output to the currently selected\n// display and turn the other display OFF.\nalways_comb begin\n\n    if (!mux_select) begin\n        seg1 = decoded_seg;\n        seg2 = 7'b1111111;   // all segments OFF\n    end\n\n    else begin\n        seg1 = 7'b1111111;   // all segments OFF\n        seg2 = decoded_seg;\n    end\n\nend\nendmodule\n\n\n\nThe first was able to synthesize. It was interesting because it manually set the other anode to all 0 bits instead of controlling the anode.\nThe second also succeeded in synthesis. It uses a similar strategy to that above but with my given modules.\nBoth outputs seem pretty reasonable."
   },
   {
     "objectID": "index.html",
@@ -124,5 +173,54 @@
     "title": "Lab 1",
     "section": "AI Prototype Summary",
     "text": "AI Prototype Summary\nI gave ChatGPT the promtp and it gave me this code:\nmodule led_blink ( output logic led );\n// UP5K internal high-frequency oscillator\nlogic clk;\n\nSB_HFOSC #(\n    .CLKHF_DIV(\"0b00\")    // 48 MHz\n) hfosc (\n    .CLKHFPU(1'b1),       // Power up oscillator\n    .CLKHFEN(1'b1),       // Enable oscillator\n    .CLKHF(clk)\n);\n\n// 48 MHz / (2 * 12,000,000) = 2 Hz\nlocalparam int unsigned HALF_PERIOD = 12_000_000;\n\nlogic [23:0] counter;\n\nalways_ff @(posedge clk) begin\n    if (counter == HALF_PERIOD - 1) begin\n        counter &lt;= '0;\n        led     &lt;= ~led;\n    end\n    else begin\n        counter &lt;= counter + 1'b1;\n    end\nend\nendmodule\nHowever, this failed to simulate, so I asked it to fix it.\nIt gave me a new script but it asked for more detailed error messages. I could not find different error messages, so it could have been more helpful by telling me where to find them."
+  },
+  {
+    "objectID": "labs/lab5/lab5.html",
+    "href": "labs/lab5/lab5.html",
+    "title": "Lab 5",
+    "section": "",
+    "text": "In this lab, an MCU was programmed to take data from a quadrature encoder on a motor and calculate the angular velocity output of the motor."
+  },
+  {
+    "objectID": "labs/lab5/lab5.html#introduction",
+    "href": "labs/lab5/lab5.html#introduction",
+    "title": "Lab 5",
+    "section": "",
+    "text": "In this lab, an MCU was programmed to take data from a quadrature encoder on a motor and calculate the angular velocity output of the motor."
+  },
+  {
+    "objectID": "labs/lab5/lab5.html#design-and-testing-methodology",
+    "href": "labs/lab5/lab5.html#design-and-testing-methodology",
+    "title": "Lab 5",
+    "section": "Design and Testing Methodology",
+    "text": "Design and Testing Methodology\nTo calculate the angular velocity, we need to take advantage of the positions of the two sensors in the quadrature encoder.\n\n\n\nFigure 1: Velocity Calculations\n\n\n\n\n\nFigure 2: Direction Calculations\n\n\nTo ensure an update rate of at least 1 Hz, we can use the delaymillis() from the TIMx library. With a base of 1 ms for the counter, we can set the delay to 1000 ms to get an output of 1 Hz. The velocity will update every 1 second interval."
+  },
+  {
+    "objectID": "labs/lab5/lab5.html#technical-documentation",
+    "href": "labs/lab5/lab5.html#technical-documentation",
+    "title": "Lab 5",
+    "section": "Technical Documentation",
+    "text": "Technical Documentation\nThe source code for the project can be found in the associated Github repository."
+  },
+  {
+    "objectID": "labs/lab5/lab5.html#results-and-discussion",
+    "href": "labs/lab5/lab5.html#results-and-discussion",
+    "title": "Lab 5",
+    "section": "Results and Discussion",
+    "text": "Results and Discussion\nBased on an rpm of 600 for the motor, the output velocity in revolutions per sec should be about 10 rev/s. As seen in the terminal screenshot below, the output velocity calculated by the quadrature encoder hovered around 9.5 rev/s once it reached steady state. This is about 5% error. The difference might be due to the resolution of the power supply or of the MCU. But it is most likely due to the age of the motor and decay in performance over time.\n\n\n\nFigure 5: Terminal Output for Interrupts at 12V\n\n\nThe interrupt method is better than manual polling. At 12V, code with manual polling used instead of interrupts produced a nonsensical value of 0.002083 rev/s for the velocity, as shown below. This is because it is not possible for the program to poll the correct amount of times. The time it takes to poll is too high for the program to catch all polling in the 1 second period.\n\n\n\nFigure 6: Terminal Output for Manual Polling at 12V"
+  },
+  {
+    "objectID": "labs/lab5/lab5.html#conclusion",
+    "href": "labs/lab5/lab5.html#conclusion",
+    "title": "Lab 5",
+    "section": "Conclusion",
+    "text": "Conclusion\nThe MCU correctly calculates the velocity from the quadrature encoder at about 9.5 rev/s at 12V. I spent about 20 hours working on this lab."
+  },
+  {
+    "objectID": "labs/lab5/lab5.html#ai-prototype-summary",
+    "href": "labs/lab5/lab5.html#ai-prototype-summary",
+    "title": "Lab 5",
+    "section": "AI Prototype Summary",
+    "text": "AI Prototype Summary\nI used the prompt given to generate code from ChatGPT. I had to add a few prompts after to get a working piece of code which is shown below.\n\n\n\n\n\n\nCautionClick for AI Code\n\n\n\n\n\n#include “STM32L432KC.h” #include &lt;stdint.h&gt; #include &lt;stdio.h&gt;\nvolatile int32_t encoder_count = 0; volatile uint8_t encoder_state = 0;\n/  Encoder: * A -&gt; PA8 * B -&gt; PA6   Both inputs generate interrupts on rising and falling edges. */\nvoid encoder_init(void) { /* Enable GPIOA clock */ RCC-&gt;AHB2ENR |= RCC_AHB2ENR_GPIOAEN;\n/* Enable SYSCFG clock */\nRCC-&gt;APB2ENR |= RCC_APB2ENR_SYSCFGEN;\n\n/*\n * PA6 and PA8 as inputs\n *\n * MODER = 00 -&gt; input\n */\nGPIOA-&gt;MODER &= ~(GPIO_MODER_MODE6_Msk |\n                  GPIO_MODER_MODE8_Msk);\n\n/*\n * Pull-ups\n *\n * Encoder outputs should pull the inputs LOW when active.\n */\nGPIOA-&gt;PUPDR &= ~(GPIO_PUPDR_PUPD6_Msk |\n                  GPIO_PUPDR_PUPD8_Msk);\n\nGPIOA-&gt;PUPDR |= (0b01 &lt;&lt; GPIO_PUPDR_PUPD6_Pos) |\n                (0b01 &lt;&lt; GPIO_PUPDR_PUPD8_Pos);\n\n/*\n * Configure EXTI6 -&gt; PA6\n * Configure EXTI8 -&gt; PA8\n *\n * EXTICR2 controls EXTI4-7\n * EXTICR3 controls EXTI8-11\n *\n * 0000 = GPIOA\n */\n\nSYSCFG-&gt;EXTICR[1] &= ~SYSCFG_EXTICR2_EXTI6_Msk;\nSYSCFG-&gt;EXTICR[2] &= ~SYSCFG_EXTICR3_EXTI8_Msk;\n\n/*\n * Enable EXTI interrupts\n */\nEXTI-&gt;IMR1 |= EXTI_IMR1_IM6;\nEXTI-&gt;IMR1 |= EXTI_IMR1_IM8;\n\n/*\n * Trigger on BOTH rising and falling edges\n */\nEXTI-&gt;RTSR1 |= EXTI_RTSR1_RT6;\nEXTI-&gt;RTSR1 |= EXTI_RTSR1_RT8;\n\nEXTI-&gt;FTSR1 |= EXTI_FTSR1_FT6;\nEXTI-&gt;FTSR1 |= EXTI_FTSR1_FT8;\n\n/*\n * Initialize encoder state\n */\nencoder_state =\n    ((GPIOA-&gt;IDR &gt;&gt; 6) & 0x01) &lt;&lt; 1 |\n    ((GPIOA-&gt;IDR &gt;&gt; 8) & 0x01);\n\n/*\n * Enable EXTI9_5 interrupt.\n *\n * PA6 and PA8 both use this interrupt vector.\n */\nNVIC_EnableIRQ(EXTI9_5_IRQn);\n}\nvoid EXTI9_5_IRQHandler(void) { /  Check whether PA6 generated the interrupt. */ if (EXTI-&gt;PR1 & EXTI_PR1_PIF6) { EXTI-&gt;PR1 = EXTI_PR1_PIF6; }\n/*\n * Check whether PA8 generated the interrupt.\n */\nif (EXTI-&gt;PR1 & EXTI_PR1_PIF8)\n{\n    EXTI-&gt;PR1 = EXTI_PR1_PIF8;\n}\n\n/*\n * Read both encoder channels.\n *\n * State format:\n *\n *   bit 1 = PA6 (B)\n *   bit 0 = PA8 (A)\n */\nuint8_t new_state =\n    (((GPIOA-&gt;IDR &gt;&gt; 6) & 0x01) &lt;&lt; 1) |\n    ((GPIOA-&gt;IDR &gt;&gt; 8) & 0x01);\n\n/*\n * Combine old and new states into a\n * 4-bit transition value.\n */\nuint8_t transition =\n    (encoder_state &lt;&lt; 2) | new_state;\n\n/*\n * Valid clockwise transitions\n */\nswitch (transition)\n{\n    case 0b0001:\n    case 0b0111:\n    case 0b1110:\n    case 0b1000:\n        encoder_count++;\n        break;\n\n    /*\n     * Valid counter-clockwise transitions\n     */\n    case 0b0010:\n    case 0b1011:\n    case 0b1101:\n    case 0b0100:\n        encoder_count--;\n        break;\n\n    /*\n     * Invalid transition:\n     * probably noise or a skipped state.\n     */\n    default:\n        break;\n}\n\n/*\n * Save current state for next interrupt.\n */\nencoder_state = new_state;\n}\nint main(void) { // Initialize the encoder pins and EXTI interrupts encoder_init();\nprintf(\"Encoder test started!\\r\\n\");\n\nwhile (1)\n{\n    printf(\"Encoder count: %ld\\r\\n\", encoder_count);\n\n    // Simple delay so we don't spam the terminal\n    for (volatile uint32_t i = 0; i &lt; 1000000; i++);\n}\n\nreturn 0;\n}\n\n\n\nThis code built in Segger and when run, it worked. I got varying encoder values in the terminal. However, originally, ChatGPT chose pins PA0 and PA1. Because of that, it had to create two separate interrupt handler functions. I asked it to switch the pins to the ones I used for the project (PA6 and PA8) because I didn’t feel like switching the pins around, nor double checking that PA0 and PA1 are 5V tolerant. It also then condensed the code into one interrupt handling function. Finally, I had it add print statements so I could see what was happening in the terminal.\nAs far as code quality, it hard-coded the actual pin numbers which is not very conducive to easy pin changes. It also had an interesting approach to the direction (cw/ccw) calculation that is definitely clearer than my own, but much longer.\nBased on this investigation, I think that AI would be efficient in generating the code for interrupts if the prompter already has some specific details in mind. I think the given prompt is probably a little too sparse to generate perfect code on the first run."
   }
 ]

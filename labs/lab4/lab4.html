@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Lindsey Sands">
-<meta name="dcterms.date" content="2026-09-15">
-<meta name="description" content="Multiplexed 7-Segment Display">
+<meta name="dcterms.date" content="2026-09-30">
+<meta name="description" content="Digital Audio">
 
-<title>Lab 2 – E155 Portfolio</title>
+<title>Lab 4 – E155 Portfolio</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -137,9 +137,6 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#schematics" id="toc-schematics" class="nav-link" data-scroll-target="#schematics">Schematics</a>
   <ul class="collapse">
   <li><a href="#results-and-discussion" id="toc-results-and-discussion" class="nav-link" data-scroll-target="#results-and-discussion">Results and Discussion</a></li>
-  </ul></li>
-  <li><a href="#testbench-simulation" id="toc-testbench-simulation" class="nav-link" data-scroll-target="#testbench-simulation">Testbench Simulation</a>
-  <ul class="collapse">
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   <li><a href="#ai-prototype-summary" id="toc-ai-prototype-summary" class="nav-link" data-scroll-target="#ai-prototype-summary">AI Prototype Summary</a></li>
   </ul></li>
@@ -151,7 +148,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Lab 2</h1>
+<h1 class="title">Lab 4</h1>
   <div class="quarto-categories">
     <div class="quarto-category">reflection</div>
     <div class="quarto-category">labreport</div>
@@ -160,7 +157,7 @@ ul.task-list li input[type="checkbox"] {
 
 <div>
   <div class="description">
-    Multiplexed 7-Segment Display
+    Digital Audio
   </div>
 </div>
 
@@ -177,7 +174,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 15, 2026</p>
+      <p class="date">September 30, 2026</p>
     </div>
   </div>
   
@@ -191,32 +188,26 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>In this lab, an FPGA was programmed to create multiplexer functionality for a dual seven segment display. Additionally, the FPGA was programmed to scan a keypad for pressed inputs.</p>
+<p>In this lab, an MCU was programmed to play music by varying output frequencies and durations.</p>
 </section>
 <section id="design-and-testing-methodology" class="level2">
 <h2 class="anchored" data-anchor-id="design-and-testing-methodology">Design and Testing Methodology</h2>
-<p>For both designs, a 48 MHz clock signal was generated from the on-board high-speed oscillator (HSOSC) from the iCE40 UltraPlus primitive library.</p>
-<p>The counter module from Lab 1 was reused for both designs. For the keypad scanner, the parameters were set to width = 23 and max = 1,500,000 based on the required output frequency of 2 Hz, as calculated below.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/Scanner_Counter_Calculation.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
 <figcaption>Figure 1: Calculation for Output at 2 Hz</figcaption>
 </figure>
 </div>
-<p>The scanner module also has enable and reset functionality.</p>
-<p>Additionally, there were calculations performed to figure out the proper pull-down resistor size for the transistor to draw enough current for the anodes of the seven segment display.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/current_calc.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
 <figcaption>Figure 2: Calculation for current draw for anode transisitors</figcaption>
 </figure>
 </div>
-<p>A standard resistor size of 330 Ω was chosen based on the calculation in Figure 2.</p>
-<p>Due to the number of pins required, the designs are split into two different top modules and run with two different .bin files.</p>
 </section>
 <section id="technical-documentation" class="level2">
 <h2 class="anchored" data-anchor-id="technical-documentation">Technical Documentation</h2>
-<p>The source code for the project can be found in the associated <a href="https://github.com/lsands5400/e155-Lab-2">Github repository</a>.</p>
+<p>The source code for the project can be found in the associated <a href="https://github.com/lsands5400/e155-lab-4">Github repository</a>.</p>
 </section>
 <section id="block-diagrams" class="level1">
 <h1>Block Diagrams</h1>
@@ -250,219 +241,11 @@ ul.task-list li input[type="checkbox"] {
 <section id="results-and-discussion" class="level2">
 <h2 class="anchored" data-anchor-id="results-and-discussion">Results and Discussion</h2>
 </section>
-</section>
-<section id="testbench-simulation" class="level1">
-<h1>Testbench Simulation</h1>
-<p>All of the testbenches ran successfully with no errors.</p>
-<div class="callout callout-style-default callout-caution callout-titled" title="Click for Questa Simulation">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Caution</span>Click for Questa Simulation
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/scanner_tb.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption>Figure 7: Scanner Questa Simulation</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<p>The scanner testbench successfully demonstrates all four output transitions, enable and reset features.</p>
-<div class="callout callout-style-default callout-caution callout-titled" title="Click for Questa Simulation">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Caution</span>Click for Questa Simulation
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/lab2_tb.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption>Figure 8: Top Module Questa Simulation</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<p>The top module exercises multiplexing functionality and LED driving functionality.</p>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>Both the multiplexed seven segment display and keypad scanner worked! I worked on the lab for ~22 hours.</p>
 </section>
 <section id="ai-prototype-summary" class="level2">
 <h2 class="anchored" data-anchor-id="ai-prototype-summary">AI Prototype Summary</h2>
-<p>I had AI generate code based on the given prompt.</p>
-<div class="callout callout-style-default callout-caution callout-titled" title="Click for AI Code">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Caution</span>Click for AI Code
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>// Lindsey Sands // Time-multiplex two 7-segment displays using one decoder</p>
-<p>module seven_seg_mux ( input logic clk, input logic [3:0] input0, input logic [3:0] input1,</p>
-<pre><code>output logic [6:0]  seg0,
-output logic [6:0]  seg1</code></pre>
-<p>);</p>
-<pre><code>// Counter used to switch between the two displays
-logic mux_select;
-
-// Output of the single 4-bit -&gt; 7-segment decoder
-logic [6:0] decoder_out;
-
-// Divide the clock down so the displays alternate
-// at a rate fast enough for persistence of vision.
-logic [19:0] counter;
-
-always_ff @(posedge clk) begin
-    counter &lt;= counter + 1'b1;
-
-    if (counter == 20'd0)
-        mux_select &lt;= ~mux_select;
-end
-
-// Select which 4-bit input goes to the decoder
-always_comb begin
-    if (mux_select)
-        decoder_out = seven_seg_decode(input1);
-    else
-        decoder_out = seven_seg_decode(input0);
-end
-
-// Send decoder output to the selected display.
-// The other display is blanked.
-always_comb begin
-    if (mux_select) begin
-        seg0 = 7'b1111111;   // off (common anode)
-        seg1 = decoder_out;
-    end
-    else begin
-        seg0 = decoder_out;
-        seg1 = 7'b1111111;   // off (common anode)
-    end
-end
-
-// Single 4-bit -&gt; 7-segment decoder
-function automatic logic [6:0] seven_seg_decode(input logic [3:0] value);
-    case (value)
-        4'h0: seven_seg_decode = 7'b1000000;
-        4'h1: seven_seg_decode = 7'b1111001;
-        4'h2: seven_seg_decode = 7'b0100100;
-        4'h3: seven_seg_decode = 7'b0110000;
-        4'h4: seven_seg_decode = 7'b0011001;
-        4'h5: seven_seg_decode = 7'b0010010;
-        4'h6: seven_seg_decode = 7'b0000010;
-        4'h7: seven_seg_decode = 7'b1111000;
-        4'h8: seven_seg_decode = 7'b0000000;
-        4'h9: seven_seg_decode = 7'b0010000;
-        4'hA: seven_seg_decode = 7'b0001000;
-        4'hB: seven_seg_decode = 7'b0000011;
-        4'hC: seven_seg_decode = 7'b1000110;
-        4'hD: seven_seg_decode = 7'b0100001;
-        4'hE: seven_seg_decode = 7'b0000110;
-        4'hF: seven_seg_decode = 7'b0001110;
-        default: seven_seg_decode = 7'b1111111;
-    endcase
-endfunction</code></pre>
-<p>endmodule</p>
-</div>
-</div>
-</div>
-<p>Then, I gave it the context of my previous counter and seven segment display modules.</p>
-<div class="callout callout-style-default callout-caution callout-titled" title="Click for AI Code">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Caution</span>Click for AI Code
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>// Lindsey Sands // lsands@g.hmc.edu // 09-16-2026 // // Time multiplexes one seven-segment decoder between // two 4-bit inputs and two 7-bit outputs. // // The seven-segment decoder is common-anode, so: // 0 = LED segment ON // 1 = LED segment OFF // // Each display is alternately driven so that both // appear to be displaying their respective values.</p>
-<p>module sevenSegMux #( parameter int width = 16, parameter int max = 50_000 )( input logic int_osc, input logic reset, input logic [3:0] s1, input logic [3:0] s2, output logic [6:0] seg1, output logic [6:0] seg2 );</p>
-<pre><code>// Counter used to control multiplexing frequency
-logic [width-1:0] mux_counter;
-
-// Selects which display is currently active
-logic mux_select;
-
-// Output of the single seven-segment decoder
-logic [6:0] decoded_seg;
-
-// Instantiate the provided counter
-counter #(
-    .width(width),
-    .max(max)
-) mux_counter_inst (
-    .int_osc(int_osc),
-    .reset(reset),
-    .en(1'b1),
-    .counter(mux_counter)
-);
-
-// Use the most significant counter bit to switch
-// between the two displays.
-assign mux_select = mux_counter[width-1];
-
-// Select which 4-bit input goes into the decoder
-logic [3:0] mux_input;
-
-always_comb begin
-    if (mux_select)
-        mux_input = s2;
-    else
-        mux_input = s1;
-end
-
-// Instantiate the provided seven-segment decoder
-sevenSegDP decoder (
-    .s(mux_input),
-    .seg(decoded_seg)
-);
-
-// Send the decoder output to the currently selected
-// display and turn the other display OFF.
-always_comb begin
-
-    if (!mux_select) begin
-        seg1 = decoded_seg;
-        seg2 = 7'b1111111;   // all segments OFF
-    end
-
-    else begin
-        seg1 = 7'b1111111;   // all segments OFF
-        seg2 = decoded_seg;
-    end
-
-end</code></pre>
-<p>endmodule</p>
-</div>
-</div>
-</div>
-<p>The first was able to synthesize. It was interesting because it manually set the other anode to all 0 bits instead of controlling the anode.</p>
-<p>The second also succeeded in synthesis. It uses a similar strategy to that above but with my given modules.</p>
-<p>Both outputs seem pretty reasonable.</p>
 
 
 </section>
