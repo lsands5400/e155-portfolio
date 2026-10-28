@@ -1,0 +1,700 @@
+---
+title: "Lab 6"
+description: "The Internet of Things and Serial Peripheral Interface"
+author: "Lindsey Sands"
+date: "10/14/26"
+categories:
+  - reflection
+  - labreport
+draft: false
+---
+
+## Introduction
+In this lab, an MCU was programmed to take temperature data from a Digital Thermometer with SPI/3-Wire Interface and send that data to the web using an ESP-WROOM-02.
+
+## Technical Documentation
+The source code for the project can be found in the associated [Github repository](https://github.com/lsands5400/e155-lab-6).
+
+
+# Schematics
+The connection from the MCU to the ESP-WROOM-02 and the temperature sensor is as shown below.
+
+![Figure 1: Schematic for Sensor and Wifi Connection](images/schematic.jpeg){width=80%}
+
+## Results and Discussion
+SPI successful sends and receives data from the temperature sensor as shown in the oscilloscope trace below.
+
+![Figure 2: Oscilloscope Trace](images/scope.jpeg){width=80%}
+
+
+## Conclusion
+The MCU successfully collects and outputs temperature data to the web! I spent about 15 hours on this lab. 
+
+## AI Prototype Summary
+
+
+::: {.callout-caution collapse="true" title="Click for Prompt 1 Results"}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thermo — Temperature Dashboard</title>
+
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --panel: #ffffff;
+      --text: #172033;
+      --muted: #778198;
+      --accent: #ff784f;
+      --green: #18a875;
+      --line: #e7ebf2;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 32px 20px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, sans-serif;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 35px;
+    }
+
+    .brand {
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    .brand span {
+      color: var(--accent);
+    }
+
+    .status {
+      background: white;
+      border: 1px solid var(--line);
+      padding: 10px 15px;
+      border-radius: 30px;
+      color: var(--green);
+      font-size: 13px;
+    }
+
+    .heading {
+      margin-bottom: 28px;
+    }
+
+    .heading h1 {
+      font-size: 34px;
+      letter-spacing: -1px;
+      margin: 8px 0;
+    }
+
+    .heading p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .eyebrow {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: 700;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--panel);
+      padding: 26px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: 0 12px 35px #192c4b0b;
+    }
+
+    .card h2 {
+      font-size: 15px;
+      margin: 0;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .badge {
+      color: var(--green);
+      background: #eefaf4;
+      border-radius: 8px;
+      padding: 7px 10px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .temperature {
+      font-size: clamp(65px, 9vw, 100px);
+      font-weight: 750;
+      letter-spacing: -5px;
+      margin-top: 42px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .unit {
+      font-size: 28px;
+      color: #9aa3b4;
+      vertical-align: top;
+      letter-spacing: 0;
+    }
+
+    .temp-status {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 15px 0 30px;
+    }
+
+    .chart {
+      width: 100%;
+      height: 110px;
+      background: linear-gradient(#fff6f1, white);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .chart svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .side {
+      display: grid;
+      gap: 20px;
+      align-content: start;
+    }
+
+    .led-preview {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px;
+      background: #f7f9fc;
+      border-radius: 16px;
+      margin: 25px 0;
+    }
+
+    .bulb {
+      width: 55px;
+      height: 55px;
+      border-radius: 17px;
+      background: #e9edf4;
+      display: grid;
+      place-items: center;
+      font-size: 27px;
+      transition: 0.2s;
+    }
+
+    .bulb.on {
+      background: #fff0c2;
+      box-shadow: 0 0 20px #ffc84d66;
+    }
+
+    .led-text strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .led-text span {
+      display: block;
+      margin-top: 5px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .toggle-row strong {
+      font-size: 13px;
+    }
+
+    .toggle-row p {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 0;
+    }
+
+    /* LED toggle switch */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      background: #d9dee8;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      left: 4px;
+      top: 4px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.2s;
+      box-shadow: 0 2px 5px #0002;
+    }
+
+    .switch input:checked + .slider {
+      background: var(--green);
+    }
+
+    .switch input:checked + .slider::before {
+      transform: translateX(20px);
+    }
+
+    .divider {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 24px 0;
+    }
+
+    .description {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    select {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #dfe5ee;
+      border-radius: 12px;
+      margin-top: 15px;
+      background: white;
+      color: var(--text);
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    select:focus {
+      outline: 2px solid #ff784f55;
+      border-color: var(--accent);
+    }
+
+    .preview {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f7f9fc;
+      padding: 13px;
+      border-radius: 12px;
+      margin-top: 14px;
+      font-size: 12px;
+    }
+
+    .preview span {
+      color: var(--muted);
+    }
+
+    .preview strong {
+      font-size: 15px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    footer {
+      margin-top: 25px;
+      color: #9aa3b4;
+      font-size: 11px;
+    }
+
+    @media (max-width: 700px) {
+      body {
+        padding: 20px 14px;
+      }
+
+      .dashboard {
+        grid-template-columns: 1fr;
+      }
+
+      .heading h1 {
+        font-size: 28px;
+      }
+
+      .temperature {
+        margin-top: 32px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+
+    <header>
+      <div class="brand">thermo<span>.</span></div>
+      <div class="status">● Demo mode</div>
+    </header>
+
+    <section class="heading">
+      <div class="eyebrow">Overview / Device 01</div>
+      <h1>Temperature monitor</h1>
+      <p>Monitor your sensor and control your device outputs.</p>
+    </section>
+
+    <section class="dashboard">
+
+      <!-- Temperature display -->
+      <article class="card">
+        <div class="card-header">
+          <h2>Live temperature</h2>
+          <span class="badge">● Sensor active</span>
+        </div>
+
+        <div class="temperature">
+          <span id="temperature">24.6</span>
+          <span class="unit">°C</span>
+        </div>
+
+        <p class="temp-status" id="tempStatus">
+          ● Within normal range
+        </p>
+
+        <!-- Decorative temperature trend -->
+        <div class="chart">
+          <svg viewBox="0 0 500 110"
+               preserveAspectRatio="none"
+               aria-label="Illustrative temperature trend">
+            <g stroke="#f1e8e3" stroke-width="1">
+              <path d="M0 25 H500"/>
+              <path d="M0 55 H500"/>
+              <path d="M0 85 H500"/>
+            </g>
+            <path
+              d="M0 80 C40 70,60 90,100 65
+                 S160 75,200 48 S260 60,300 38
+                 S360 50,400 25 S460 35,500 15"
+              fill="none"
+              stroke="#ff784f"
+              stroke-width="3"
+              stroke-linecap="round"/>
+          </svg>
+        </div>
+        <p class="description">Illustrative recent temperature trend</p>
+      </article>
+
+      <div class="side">
+
+        <!-- LED control -->
+        <article class="card">
+          <div class="card-header">
+            <h2>LED output</h2>
+            <span class="eyebrow">GPIO</span>
+          </div>
+
+          <div class="led-preview">
+            <div class="bulb" id="ledBulb">💡</div>
+            <div class="led-text">
+              <strong id="ledState">LED is OFF</strong>
+              <span id="ledDescription">
+                Output is currently inactive
+              </span>
+            </div>
+          </div>
+
+          <div class="toggle-row">
+            <div>
+              <strong>LED power</strong>
+              <p>Toggle the connected output</p>
+            </div>
+
+            <label class="switch" aria-label="Toggle LED">
+              <input type="checkbox" id="ledToggle" role="switch">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <hr class="divider">
+
+          <p class="description">
+            This switch updates the interface. Connect it to your
+            microcontroller API to control the physical LED.
+          </p>
+        </article>
+
+        <!-- Precision selector -->
+        <article class="card">
+          <h2>Display precision</h2>
+
+          <p class="description">
+            Choose how many decimal places appear in the temperature
+            readout.
+          </p>
+
+          <label for="precision" class="eyebrow">
+            Decimal places
+          </label>
+
+          <select id="precision">
+            <option value="0">0 decimal places</option>
+            <option value="1" selected>1 decimal place</option>
+            <option value="2">2 decimal places</option>
+            <option value="3">3 decimal places</option>
+          </select>
+
+          <div class="preview">
+            <span>Preview</span>
+            <strong id="precisionPreview">24.6 °C</strong>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <footer>
+      THERMO UI · Dashboard prototype · Demo readings are simulated
+    </footer>
+
+  </main>
+
+  <script>
+    // Demo temperature. Replace with real sensor data.
+    let currentTemperature = 24.6;
+
+    const temperatureEl = document.getElementById("temperature");
+    const precisionEl = document.getElementById("precision");
+    const previewEl = document.getElementById("precisionPreview");
+    const ledToggle = document.getElementById("ledToggle");
+
+    // Update the temperature display and decimal precision.
+    function renderTemperature() {
+      const decimals = Number(precisionEl.value);
+      const formatted = currentTemperature.toFixed(decimals);
+
+      temperatureEl.textContent = formatted;
+      previewEl.textContent = formatted + " °C";
+
+      const status = document.getElementById("tempStatus");
+
+      if (currentTemperature < 18) {
+        status.textContent = "● Cool environment";
+      } else if (currentTemperature > 28) {
+        status.textContent = "● Warmer than usual";
+      } else {
+        status.textContent = "● Within normal range";
+      }
+    }
+
+    precisionEl.addEventListener("change", renderTemperature);
+
+    // Update the LED interface when the switch changes.
+    ledToggle.addEventListener("change", async () => {
+      const isOn = ledToggle.checked;
+
+      document.getElementById("ledState").textContent =
+        isOn ? "LED is ON" : "LED is OFF";
+
+      document.getElementById("ledDescription").textContent =
+        isOn
+          ? "Output is currently active"
+          : "Output is currently inactive";
+
+      document.getElementById("ledBulb")
+        .classList.toggle("on", isOn);
+
+      // TODO: Send the state to your hardware.
+      //
+      // await fetch("/api/led", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json"
+      //   },
+      //   body: JSON.stringify({ on: isOn })
+      // });
+    });
+
+    // DEMO ONLY: simulate a small temperature change every 2.5 seconds.
+    // Remove this when real sensor data is available.
+    setInterval(() => {
+      currentTemperature += (Math.random() - 0.5) * 0.12;
+
+      currentTemperature = Math.max(
+        20,
+        Math.min(29, currentTemperature)
+      );
+
+      renderTemperature();
+    }, 2500);
+
+    renderTemperature();
+  </script>
+</body>
+</html>
+:::
+
+
+#include "stm32l432xx.h"
+#include <stdint.h>
+#include <stdbool.h>
+
+/*
+ * DS1722 temperature sensor
+ *
+ * MCU: STM32L432KC
+ * Peripheral: SPI1
+ * CE (chip enable): PA4
+ *
+ * IMPORTANT: DS1722 CE is ACTIVE HIGH.
+ */
+
+#define DS1722_SPI       SPI1
+#define DS1722_CE_PORT   GPIOA
+#define DS1722_CE_PIN    4U
+
+#define DS1722_TEMP_LSB  0x01U
+
+#define DS1722_CE_HIGH() \
+    (DS1722_CE_PORT->BSRR = (1U << DS1722_CE_PIN))
+
+#define DS1722_CE_LOW() \
+    (DS1722_CE_PORT->BSRR = (1U << (DS1722_CE_PIN + 16U)))
+
+#define SPI_TIMEOUT 100000U
+
+
+/*
+ * Transfer one byte over SPI.
+ * Returns false if the SPI peripheral times out.
+ */
+static bool SPI1_TransferByte(uint8_t tx, uint8_t *rx)
+{
+    uint32_t timeout = SPI_TIMEOUT;
+
+    // Wait until transmit buffer is empty.
+    while (!(DS1722_SPI->SR & SPI_SR_TXE)) {
+        if (--timeout == 0U) {
+            return false;
+        }
+    }
+
+    // Write one byte to the SPI data register.
+    *(__IO uint8_t *)&DS1722_SPI->DR = tx;
+
+    // Wait for one received byte.
+    timeout = SPI_TIMEOUT;
+
+    while (!(DS1722_SPI->SR & SPI_SR_RXNE)) {
+        if (--timeout == 0U) {
+            return false;
+        }
+    }
+
+    // Read the received byte.
+    *rx = *(__IO uint8_t *)&DS1722_SPI->DR;
+
+    return true;
+}
+
+::: {.callout-caution collapse="true" title="Click for Prompt 2 Results"}
+/*
+ * Read temperature from the DS1722.
+ *
+ * Assumptions:
+ * - SPI1 has already been initialized.
+ * - SPI is configured as master, 8-bit, full duplex.
+ * - CPHA = 1, as required by the DS1722.
+ * - SERMODE is connected to VDDD (SPI mode).
+ * - The sensor is configured for continuous conversion.
+ *
+ * Returns true on success, false on SPI timeout.
+ * Temperature is returned in degrees Celsius.
+ */
+bool DS1722_ReadTemperature(float *temperature)
+{
+    uint8_t lsb;
+    uint8_t msb;
+    uint16_t raw;
+
+    if (temperature == 0) {
+        return false;
+    }
+
+    // Start transaction: CE must be HIGH.
+    DS1722_CE_HIGH();
+
+    // Send temperature LSB register address.
+    if (!SPI1_TransferByte(DS1722_TEMP_LSB, &lsb)) {
+        DS1722_CE_LOW();
+        return false;
+    }
+
+    // Read temperature LSB.
+    if (!SPI1_TransferByte(0xFFU, &lsb)) {
+        DS1722_CE_LOW();
+        return false;
+    }
+
+    // Read next register (temperature MSB).
+    // The DS1722 automatically advances to register 0x02.
+    if (!SPI1_TransferByte(0xFFU, &msb)) {
+        DS1722_CE_LOW();
+        return false;
+    }
+
+    // End transaction.
+    DS1722_CE_LOW();
+
+    // Combine MSB and LSB.
+    raw = ((uint16_t)msb << 8) | lsb;
+
+    // DS1722 data is signed, two's-complement,
+    // with temperature represented in units of 1/256 °C.
+    *temperature = (float)((int16_t)raw) / 256.0f;
+
+    return true;
+}
+:::
+
+
+The HTML result looks super similar to typical vibe-coded websites. It has a temperature value even when its not hooked up to the board which is suspiscious. 
+
+The script from the second prompt didn't do everything. Instead, it lists its assumptions in the beginning and simply creates a script for the rest. I'm not sure why it skips so many steps and assumes I have information/work that I didn't offer up. Maybe this is a result of the increase in prompting over the years and represents an attempt to reduce costs on the AI company's end. 
