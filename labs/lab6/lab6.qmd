@@ -19,7 +19,7 @@ The source code for the project can be found in the associated [Github repositor
 # Schematics
 The connection from the MCU to the ESP-WROOM-02 and the temperature sensor is as shown below.
 
-![Figure 1: Schematic for Sensor and Wifi Connection](images/schematic.jpeg){width=80%}
+![Figure 1: Schematic for Sensor and Wifi Connection](images/new-schematic.jpg){width=80%}
 
 ## Results and Discussion
 SPI successful sends and receives data from the temperature sensor as shown in the oscilloscope trace below.
