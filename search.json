@@ -193,7 +193,7 @@
     "href": "labs/lab4/lab4.html#design-and-testing-methodology",
     "title": "Lab 4",
     "section": "Design and Testing Methodology",
-    "text": "Design and Testing Methodology\n\n\n\nFigure 1: Calculation for Output at 2 Hz\n\n\n\n\n\nFigure 2: Calculation for current draw for anode transisitors"
+    "text": "Design and Testing Methodology\nIn order to figure out the proper prescaler and auto reload register values, calculations were performed, as seen below.\n\n\n\nFigure 1: Calculation for delays part 1\n\n\n\n\n\nFigure 2: Calculation for delays part 2\n\n\n\n\n\nFigure 1: Calculation for frequencies part 1\n\n\n\n\n\nFigure 2: Calculation for frequencies part 2"
   },
   {
     "objectID": "labs/lab4/lab4.html#technical-documentation",
@@ -203,25 +203,18 @@
     "text": "Technical Documentation\nThe source code for the project can be found in the associated Github repository."
   },
   {
-    "objectID": "labs/lab4/lab4.html#results-and-discussion",
-    "href": "labs/lab4/lab4.html#results-and-discussion",
-    "title": "Lab 4",
-    "section": "Results and Discussion",
-    "text": "Results and Discussion"
-  },
-  {
     "objectID": "labs/lab4/lab4.html#conclusion",
     "href": "labs/lab4/lab4.html#conclusion",
     "title": "Lab 4",
     "section": "Conclusion",
-    "text": "Conclusion"
+    "text": "Conclusion\nThr program and circuit work. The MCU successfully outputted the song Fur Elise to an 8 ohn speaker."
   },
   {
     "objectID": "labs/lab4/lab4.html#ai-prototype-summary",
     "href": "labs/lab4/lab4.html#ai-prototype-summary",
     "title": "Lab 4",
     "section": "AI Prototype Summary",
-    "text": "AI Prototype Summary"
+    "text": "AI Prototype Summary\nFor the timer, ChatGPT suggests “TIM2 in output-compare toggle mode”. It mostly just does nto advise that you use TIM6/7 because they are too basic.\nFor the specific pin, it lists GPIO: PA0\nTimer: TIM2\nChannel: CH1\nAlternate function: AF1\nOutput mode: PWM or output compare\nIt also listed two alternate options, but it didn’t list the one I used which is interesting.\nIt gives multiple options for PWM configuration and shows the formulas for each. It lists all the regiters needed for TIM2 as well as the GPIO and RCC clock setup. Finally, at the end it lists links to the documentation.\nOverall, this AI output seems like it would give pretty accurate information for a good head start on the lab."
   },
   {
     "objectID": "labs/lab6/lab6.html",

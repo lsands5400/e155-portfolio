@@ -133,10 +133,8 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#design-and-testing-methodology" id="toc-design-and-testing-methodology" class="nav-link" data-scroll-target="#design-and-testing-methodology">Design and Testing Methodology</a></li>
   <li><a href="#technical-documentation" id="toc-technical-documentation" class="nav-link" data-scroll-target="#technical-documentation">Technical Documentation</a></li>
-  <li><a href="#block-diagrams" id="toc-block-diagrams" class="nav-link" data-scroll-target="#block-diagrams">Block Diagrams</a></li>
   <li><a href="#schematics" id="toc-schematics" class="nav-link" data-scroll-target="#schematics">Schematics</a>
   <ul class="collapse">
-  <li><a href="#results-and-discussion" id="toc-results-and-discussion" class="nav-link" data-scroll-target="#results-and-discussion">Results and Discussion</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   <li><a href="#ai-prototype-summary" id="toc-ai-prototype-summary" class="nav-link" data-scroll-target="#ai-prototype-summary">AI Prototype Summary</a></li>
   </ul></li>
@@ -192,16 +190,29 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="design-and-testing-methodology" class="level2">
 <h2 class="anchored" data-anchor-id="design-and-testing-methodology">Design and Testing Methodology</h2>
+<p>In order to figure out the proper prescaler and auto reload register values, calculations were performed, as seen below.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/Scanner_Counter_Calculation.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
-<figcaption>Figure 1: Calculation for Output at 2 Hz</figcaption>
+<p><img src="images/dur_calc.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>Figure 1: Calculation for delays part 1</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/current_calc.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
-<figcaption>Figure 2: Calculation for current draw for anode transisitors</figcaption>
+<p><img src="images/dur_calc2.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>Figure 2: Calculation for delays part 2</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/freq_calc.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>Figure 1: Calculation for frequencies part 1</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/freq_calc2.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>Figure 2: Calculation for frequencies part 2</figcaption>
 </figure>
 </div>
 </section>
@@ -209,43 +220,29 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="technical-documentation">Technical Documentation</h2>
 <p>The source code for the project can be found in the associated <a href="https://github.com/lsands5400/e155-lab-4">Github repository</a>.</p>
 </section>
-<section id="block-diagrams" class="level1">
-<h1>Block Diagrams</h1>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/mux_block_diagram.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
-<figcaption>Figure 3: Block diagram for Mutilplexed Seven Segment Display</figcaption>
-</figure>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/scan_block_diagram.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
-<figcaption>Figure 4: Block diagram for Keypad Scanner</figcaption>
-</figure>
-</div>
-</section>
 <section id="schematics" class="level1">
 <h1>Schematics</h1>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/mux_schematic.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
-<figcaption>Figure 5: Schematic for Multiplexed Seven Segment Display</figcaption>
+<p><img src="images/schematic.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>Figure 5: Schematic for 8 Ohm Speaker</figcaption>
 </figure>
 </div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/scan_schematic.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
-<figcaption>Figure 6: Schematic for Keypad Scanner</figcaption>
-</figure>
-</div>
-<section id="results-and-discussion" class="level2">
-<h2 class="anchored" data-anchor-id="results-and-discussion">Results and Discussion</h2>
-</section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>Thr program and circuit work. The MCU successfully outputted the song Fur Elise to an 8 ohn speaker.</p>
 </section>
 <section id="ai-prototype-summary" class="level2">
 <h2 class="anchored" data-anchor-id="ai-prototype-summary">AI Prototype Summary</h2>
+<p>For the timer, ChatGPT suggests “TIM2 in output-compare toggle mode”. It mostly just does nto advise that you use TIM6/7 because they are too basic.</p>
+<p>For the specific pin, it lists GPIO: PA0</p>
+<p>Timer: TIM2</p>
+<p>Channel: CH1</p>
+<p>Alternate function: AF1</p>
+<p>Output mode: PWM or output compare</p>
+<p>It also listed two alternate options, but it didn’t list the one I used which is interesting.</p>
+<p>It gives multiple options for PWM configuration and shows the formulas for each. It lists all the regiters needed for TIM2 as well as the GPIO and RCC clock setup. Finally, at the end it lists links to the documentation.</p>
+<p>Overall, this AI output seems like it would give pretty accurate information for a good head start on the lab.</p>
 
 
 </section>
